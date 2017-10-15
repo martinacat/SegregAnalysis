@@ -7,6 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class View extends JFrame {
+    public JTextField sizeText;
+    public JComboBox algorithmDropdown; // choose algorithm
+    public JComboBox generatorDropdown;
+    public JTextField stepsText;
+    public JButton applyButton;
+
     public View(String title){
 
         super(title);
@@ -14,16 +20,15 @@ public class View extends JFrame {
 
         JPanel panel = new JPanel(new SpringLayout());
         add(panel);
-        placeComponents(panel);
+        populateView(panel);
 
         pack();
         setSize(340, 210);
         setLocationRelativeTo(null); // center
-        setVisible(true);
 
     }
 
-    private static void placeComponents(JPanel panel) {
+    private void populateView(JPanel panel) {
 
         panel.setLayout(null);
 
@@ -33,7 +38,7 @@ public class View extends JFrame {
         sizeLabel.setBounds(10,20,100,25);
         panel.add(sizeLabel);
 
-        JTextField sizeText = new JTextField(20);
+        sizeText = new JTextField(20);
         sizeText.setBounds(140,20,165,25);
         panel.add(sizeText);
 
@@ -45,7 +50,7 @@ public class View extends JFrame {
         panel.add(genLabel);
 
         String[] generatorTypes = {"Grid", "Preferential Attachment", "Random", "Random Euclidean"};
-        JComboBox generatorDropdown = new JComboBox(generatorTypes);
+        generatorDropdown = new JComboBox(generatorTypes);
         generatorDropdown.setBounds(140,50,165,25);
         panel.add(generatorDropdown);
 
@@ -57,7 +62,7 @@ public class View extends JFrame {
         panel.add(algLabel);
 
         String[] algorithms = {"Henry", "Schelling"};
-        JComboBox algorithmDropdown = new JComboBox(algorithms);
+        algorithmDropdown = new JComboBox(algorithms);
         algorithmDropdown.setBounds(140,80,165,25);
         panel.add(algorithmDropdown);
 
@@ -68,24 +73,16 @@ public class View extends JFrame {
         stepsLabel.setBounds(10,110,100,25);
         panel.add(stepsLabel);
 
-        JTextField stepsText = new JTextField(20);
+        stepsText = new JTextField(20);
         stepsText.setBounds(140,110,165,25);
         panel.add(stepsText);
 
         // Creating button
 
-        JButton applyButton = new JButton("Generate");
+        applyButton = new JButton("Generate");
         applyButton.setBounds(10, 150, 90, 25);
         panel.add(applyButton);
 
-        applyButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                new SegregAnalysis(100, SegregAnalysis.GeneratorType.PREFERENTIAL_ATTACHMENT, 100);
-
-            }
-        });
     }
 
 

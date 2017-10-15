@@ -3,6 +3,7 @@ package uk.ac.man.cs.segreganalysis;
 import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
+import uk.ac.man.cs.segreganalysis.controller.Controller;
 import uk.ac.man.cs.segreganalysis.models.HenryModel;
 import uk.ac.man.cs.segreganalysis.view.View;
 
@@ -14,7 +15,9 @@ public class SegregAnalysis {
     }
 
     public static void main(String args[]) {
-        View frame = new View("SegregAnalysis");
+        View view = new View("SegregAnalysis");
+        Controller controller = new Controller(view);
+        view.setVisible(true);
     }
 
 
@@ -30,6 +33,7 @@ public class SegregAnalysis {
                 break;
             case PREFERENTIAL_ATTACHMENT:
                 // Between 1 and 3 new links per node added.
+                // todo add options in the view
                 gen = new BarabasiAlbertGenerator(3);
                 break;
             case RANDOM:
