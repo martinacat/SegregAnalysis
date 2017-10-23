@@ -49,7 +49,7 @@ public class View extends JFrame {
         genLabel.setBounds(10,50,100,25);
         panel.add(genLabel);
 
-        String[] generatorTypes = {"Grid", "Preferential Attachment", "Random", "Random Euclidean"};
+        String[] generatorTypes = {"Preferential Attachment", "Random", "Random Euclidean"};
         generatorDropdown = new JComboBox(generatorTypes);
         generatorDropdown.setBounds(140,50,165,25);
         panel.add(generatorDropdown);

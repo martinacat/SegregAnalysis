@@ -2,10 +2,18 @@ package uk.ac.man.cs.segreganalysis;
 
 import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
 import uk.ac.man.cs.segreganalysis.controller.Controller;
+import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.HenryModel;
 import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.XYChart;
+
+import java.util.Iterator;
 
 
 public class SegregAnalysis {
@@ -24,7 +32,10 @@ public class SegregAnalysis {
     public SegregAnalysis(int numberOfNodes, GeneratorType generator, int steps ) {
 
 
+
         Graph graph = new SingleGraph("Network");
+        //graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
+
         Generator gen;
 
         switch (generator){
@@ -53,14 +64,51 @@ public class SegregAnalysis {
             gen.nextEvents();
         gen.end();
 
+
+        // initialise random attribute
+        Iterator<Node> iter = graph.iterator();
+
+        while (iter.hasNext()){
+            Node n = iter.next();
+            if (Math.random() > 0.5) {
+                n.addAttribute("gender", 1);
+                n.addAttribute("ui.style", "fill-color: rgb(255,0,255);");
+            }
+            else {
+                n.addAttribute("gender", -1);
+                n.addAttribute("ui.style", "fill-color: rgb(0,200,255);");
+            }
+        }
+
+
+        // segregation index
+        DuncanSegregationIndex index = new DuncanSegregationIndex(graph);
+
+        // iterative model
         HenryModel henryModel = new HenryModel(graph);
+
+        // dataset for plotting graph jfree
+        final XYSeriesCollection dataset = new XYSeriesCollection( );
+        final XYSeries duncan = new XYSeries( "DSI Duncan Segregation Index" );
+
+
 
         // iterations of the algorithm
         int i = steps;
         while (i > 0) {
+            duncan.add(i, index.calculate());
             henryModel.iteration();
             i--;
         }
+
+        dataset.addSeries(duncan);
+
+        XYChart chart = new XYChart("Segregation Emergence Statistics",
+                "Duncan Segregation index at each step", dataset);
+
+        chart.pack( );
+        RefineryUtilities.centerFrameOnScreen( chart );
+        chart.setVisible( true );
 
         graph.display();
 

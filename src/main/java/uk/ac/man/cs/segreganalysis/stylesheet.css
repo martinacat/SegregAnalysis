@@ -1,0 +1,15 @@
+node {
+	fill-color: grey;
+	size: 10px;
+	stroke-mode: plain;
+	stroke-color: black;
+	stroke-width: 1px;
+}
+
+node.male {
+	fill-color: blue;
+}
+
+node.female {
+	fill-color: red;
+}

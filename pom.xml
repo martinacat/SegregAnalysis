@@ -9,6 +9,8 @@
     <version>1.0</version>
 
     <dependencies>
+
+        <!-- GraphStream -->
         <dependency>
             <groupId>org.graphstream</groupId>
             <artifactId>gs-core</artifactId>
@@ -24,5 +26,13 @@
             <artifactId>gs-ui</artifactId>
             <version>1.3</version>
         </dependency>
+
+        <!-- jFreeChart -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.19</version>
+        </dependency>
+
     </dependencies>
 </project>

@@ -35,16 +35,14 @@ public class Controller implements ActionListener{
 
 
             switch (view.generatorDropdown.getSelectedIndex()){
+
                 case 0:
-                    generatorType = SegregAnalysis.GeneratorType.GRID;
-                    break;
-                case 1:
                     generatorType = SegregAnalysis.GeneratorType.PREFERENTIAL_ATTACHMENT;
                     break;
-                case 2:
+                case 1:
                     generatorType = SegregAnalysis.GeneratorType.RANDOM;
                     break;
-                case 3:
+                case 2:
                     generatorType = SegregAnalysis.GeneratorType.RANDOM_EUCLIDEAN;
                     break;
                 default:

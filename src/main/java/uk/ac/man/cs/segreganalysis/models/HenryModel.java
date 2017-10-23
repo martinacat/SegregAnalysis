@@ -4,7 +4,9 @@ import org.graphstream.graph.*;
 
 import java.util.UUID;
 
-
+/*  Based on the model broposed in
+    A. D. Henry, P. Pralat, C. Zhang, "Emergence of segregation in evolving social networks"
+ */
 public class HenryModel {
 
     Graph graph;
@@ -18,11 +20,8 @@ public class HenryModel {
         // choose random edge uv
         Edge edge = getRandomEdge();
 
-        // assess attribute distance d(u,v)
-        double attributeDistance = calculateAttributeDistance(edge);
-
-        // choose: delete or keep
-        if (isToBeDeleted(attributeDistance)) {
+        // choose: delete or keep based on attribute distance
+        if (isToBeDeleted(edge)) {
 
             int n0 = edge.getNode0().getIndex();
             int n1 = edge.getNode1().getIndex();
@@ -45,31 +44,42 @@ public class HenryModel {
     }
 
 
+    // rewires one of the two nodes given with a random node
     private void rewire(int n0, int n1) {
         int randomNode = getRandomNodeIndex();
 
-        // todo check if String identifier is okay this way
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.5) { // rewire n0
             while (graph.getNode(randomNode).hasEdgeBetween(n0)) {
-                // try generating another random node
                 randomNode = getRandomNodeIndex();
             }
-            graph.addEdge(UUID.randomUUID().toString(), n0, randomNode);
+            graph.addEdge(n0 + "_" + randomNode, n0, randomNode);
+            if (!graph.getNode(n0).getAttribute("gender").equals(graph.getNode(randomNode).getAttribute("gender"))){
+                graph.getEdge(n0 + "_" + randomNode).changeAttribute("layout.weight", 3);
+            }else {
+                graph.getEdge(n0 + "_" + randomNode).changeAttribute("layout.weight", 0.5);
+
+            }
         }
-        else {
+        else { // rewire n1
             while (graph.getNode(randomNode).hasEdgeBetween(n1)) {
-                // try generating another random node
                 randomNode = getRandomNodeIndex();
             }
-            graph.addEdge(UUID.randomUUID().toString(), n1, randomNode);
+            graph.addEdge(n1 + "_" + randomNode, n1, randomNode);
+            if (!graph.getNode(n1).getAttribute("gender").equals(graph.getNode(randomNode).getAttribute("gender"))){
+                graph.getEdge(n1 + "_" + randomNode).changeAttribute("layout.weight", 3);
+            }else {
+                graph.getEdge(n1 + "_" + randomNode).changeAttribute("layout.weight", 0.5);
+
+            }
         }
 
     }
 
-    // todo
-    private boolean isToBeDeleted(double attributeDistance) {
+    private boolean isToBeDeleted(Edge edge) {
+        // calculate attribute distance todo
+        calculateAttributeDistance(edge);
 
-        return Math.random() > 0.5 ;
+        return (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) ;
     }
 
     // todo
