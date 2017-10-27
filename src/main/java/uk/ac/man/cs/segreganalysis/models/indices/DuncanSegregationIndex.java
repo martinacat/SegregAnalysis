@@ -20,7 +20,7 @@ public class DuncanSegregationIndex {
         Iterator<Node> iter = graph.iterator();
         while (iter.hasNext()){
             Node n = iter.next();
-            if (n.getAttribute("gender").equals("female")) {
+            if (n.getAttribute("gender").equals("male")) {
                 neg++;
             }else{
                 pos++;
@@ -47,7 +47,7 @@ public class DuncanSegregationIndex {
 
             for (Edge e : edges) {
                 opposite = e.getOpposite(n);
-                if (opposite.getAttribute("gender").equals(-1)) {
+                if (opposite.getAttribute("gender").equals("male")) {
                     negNeighbours++;
 
                 }

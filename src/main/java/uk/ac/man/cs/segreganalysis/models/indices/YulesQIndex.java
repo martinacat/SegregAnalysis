@@ -31,7 +31,7 @@ public class YulesQIndex {
 
      */
 
-    public YulesQIndex(Graph graph) {
+    public YulesQIndex(Graph g, int node) {
 
     }
 
