@@ -7,14 +7,18 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.ApplicationFrame;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class XYChart extends ApplicationFrame {
+public class XYChart extends JFrame {
+
 
     public XYChart(String applicationTitle, String chartTitle, XYDataset dataset){
+
         super(applicationTitle);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 chartTitle ,

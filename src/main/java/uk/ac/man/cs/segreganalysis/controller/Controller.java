@@ -1,8 +1,10 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.view.View;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,19 +17,17 @@ public class Controller implements ActionListener{
         view.applyButton.addActionListener(this);
 
         view.generatorDropdown.addActionListener(new ActionListener() {
-                                                     public void actionPerformed(ActionEvent e) {
-                                                         if (view.generatorDropdown.getSelectedIndex() != 0) {
-                                                             view.maxLinksLabel.setVisible(false);
-                                                             view.maxLinksPerStepText.setVisible(false);
-                                                         }else{
-                                                             view.maxLinksLabel.setVisible(true);
-                                                             view.maxLinksPerStepText.setVisible(true);
-                                                         }
-                                                         view.maxLinksPerStepText.revalidate();
-
-                                                     }
-                                                 }
-
+            public void actionPerformed(ActionEvent e) {
+                if (view.generatorDropdown.getSelectedIndex() != 0) {
+                    view.maxLinksLabel.setVisible(false);
+                    view.maxLinksPerStepText.setVisible(false);
+                }
+                else {
+                    view.maxLinksLabel.setVisible(true);
+                    view.maxLinksPerStepText.setVisible(true);
+                }
+                view.maxLinksPerStepText.revalidate();
+            }}
         );
     }
 
@@ -42,22 +42,28 @@ public class Controller implements ActionListener{
 
             SegregAnalysis.GeneratorType generatorType;
 
-            if (view.sizeText.getText() != null) {
+            // todo: stop the graph from being displayed if the input is not sanitized
+            if (StringUtils.isNumeric(view.sizeText.getText())) {
                 size = Integer.parseInt(view.sizeText.getText());
+            } else {
+                JOptionPane.showMessageDialog(view, "Please insert a numeric value for Size");
             }
 
-            if (view.stepsText.getText() != null) {
+            if (StringUtils.isNumeric(view.stepsText.getText())) {
                 steps = Integer.parseInt(view.stepsText.getText());
+            } else {
+                JOptionPane.showMessageDialog(view, "Please insert a numeric value for Steps");
             }
-
-
 
             switch (view.generatorDropdown.getSelectedIndex()){
 
                 case 0:
                     generatorType = SegregAnalysis.GeneratorType.PREFERENTIAL_ATTACHMENT;
-                    if ( view.maxLinksPerStepText.getText() != null) {
+                    if ( StringUtils.isNumeric(view.maxLinksPerStepText.getText())) {
                         maxLinksPerStep = Integer.parseInt(view.maxLinksPerStepText.getText());
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(view, "Please insert a numeric value for Max Links Per Step");
                     }
                     break;
                 case 1:

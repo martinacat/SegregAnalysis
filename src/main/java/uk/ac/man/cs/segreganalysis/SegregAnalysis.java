@@ -4,6 +4,7 @@ import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
@@ -108,7 +109,9 @@ public class SegregAnalysis {
         RefineryUtilities.centerFrameOnScreen( chart );
         chart.setVisible( true );
 
-        graph.display();
+        Viewer viewer = graph.display();
+        viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+
 
     }
 
