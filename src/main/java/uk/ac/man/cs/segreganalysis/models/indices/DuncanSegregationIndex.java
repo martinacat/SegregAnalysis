@@ -16,11 +16,11 @@ public class DuncanSegregationIndex {
         neg = 0;
         pos = 0;
 
+        // count
         Iterator<Node> iter = graph.iterator();
-
         while (iter.hasNext()){
             Node n = iter.next();
-            if (n.getAttribute("gender").equals(-1)){
+            if (n.getAttribute("gender").equals("female")) {
                 neg++;
             }else{
                 pos++;
@@ -32,7 +32,7 @@ public class DuncanSegregationIndex {
 
     }
 
-    public double calculate() {
+    public float calculate() {
 
         int negNeighbours = 0;
         int posNeighbours = 0;
@@ -65,7 +65,7 @@ public class DuncanSegregationIndex {
         }
 
 
-        return 0.5 * result;
+        return result * (float) 0.5;
     }
 
 }

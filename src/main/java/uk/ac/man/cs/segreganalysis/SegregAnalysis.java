@@ -29,7 +29,7 @@ public class SegregAnalysis {
     }
 
 
-    public SegregAnalysis(int numberOfNodes, GeneratorType generator, int steps ) {
+    public SegregAnalysis(int numberOfNodes, GeneratorType generator,  int steps, int maxLinksPerStep ) {
 
 
 
@@ -43,9 +43,7 @@ public class SegregAnalysis {
                 gen = new GridGenerator();
                 break;
             case PREFERENTIAL_ATTACHMENT:
-                // Between 1 and 3 new links per node added.
-                // todo add options in the view
-                gen = new BarabasiAlbertGenerator(3);
+                gen = new BarabasiAlbertGenerator(maxLinksPerStep);
                 break;
             case RANDOM:
                 gen = new RandomGenerator();
@@ -54,7 +52,7 @@ public class SegregAnalysis {
                 gen = new RandomEuclideanGenerator();
                 break;
             default:
-                gen = new BarabasiAlbertGenerator();
+                gen = new BarabasiAlbertGenerator(maxLinksPerStep);
                 break;
         }
 
@@ -71,11 +69,11 @@ public class SegregAnalysis {
         while (iter.hasNext()){
             Node n = iter.next();
             if (Math.random() > 0.5) {
-                n.addAttribute("gender", 1);
+                n.addAttribute("gender", "male");
                 n.addAttribute("ui.style", "fill-color: rgb(255,0,255);");
             }
             else {
-                n.addAttribute("gender", -1);
+                n.addAttribute("gender", "female");
                 n.addAttribute("ui.style", "fill-color: rgb(0,200,255);");
             }
         }

@@ -19,7 +19,7 @@ public class XYChart extends ApplicationFrame {
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 chartTitle ,
                 "Steps" ,
-                "DSI" ,
+                "Index value" ,
                 dataset ,
                 PlotOrientation.VERTICAL ,
                 true , true , false);
@@ -29,6 +29,7 @@ public class XYChart extends ApplicationFrame {
         final XYPlot plot = xylineChart.getXYPlot( );
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
+        renderer.setBaseShapesVisible(false); // no data points
         renderer.setSeriesPaint( 0 , Color.RED );
         renderer.setSeriesPaint( 1 , Color.GREEN );
         renderer.setSeriesPaint( 2 , Color.YELLOW );

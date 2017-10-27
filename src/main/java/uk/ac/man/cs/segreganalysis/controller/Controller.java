@@ -13,6 +13,22 @@ public class Controller implements ActionListener{
     public Controller(View v){
         view = v;
         view.applyButton.addActionListener(this);
+
+        view.generatorDropdown.addActionListener(new ActionListener() {
+                                                     public void actionPerformed(ActionEvent e) {
+                                                         if (view.generatorDropdown.getSelectedIndex() != 0) {
+                                                             view.maxLinksLabel.setVisible(false);
+                                                             view.maxLinksPerStepText.setVisible(false);
+                                                         }else{
+                                                             view.maxLinksLabel.setVisible(true);
+                                                             view.maxLinksPerStepText.setVisible(true);
+                                                         }
+                                                         view.maxLinksPerStepText.revalidate();
+
+                                                     }
+                                                 }
+
+        );
     }
 
     public void actionPerformed( ActionEvent e ) {
@@ -22,22 +38,27 @@ public class Controller implements ActionListener{
             // check that all the fields are full
             int size = 0;
             int steps = 0;
+            int maxLinksPerStep = 0;
 
             SegregAnalysis.GeneratorType generatorType;
 
-            if (view.sizeText.getText() != null){
+            if (view.sizeText.getText() != null) {
                 size = Integer.parseInt(view.sizeText.getText());
             }
 
-            if (view.stepsText.getText() != null){
+            if (view.stepsText.getText() != null) {
                 steps = Integer.parseInt(view.stepsText.getText());
             }
+
 
 
             switch (view.generatorDropdown.getSelectedIndex()){
 
                 case 0:
                     generatorType = SegregAnalysis.GeneratorType.PREFERENTIAL_ATTACHMENT;
+                    if ( view.maxLinksPerStepText.getText() != null) {
+                        maxLinksPerStep = Integer.parseInt(view.maxLinksPerStepText.getText());
+                    }
                     break;
                 case 1:
                     generatorType = SegregAnalysis.GeneratorType.RANDOM;
@@ -62,7 +83,7 @@ public class Controller implements ActionListener{
 
 
             // start the simulation
-            new SegregAnalysis(size, generatorType ,steps);
+            new SegregAnalysis(size, generatorType , steps, maxLinksPerStep);
 
 
 

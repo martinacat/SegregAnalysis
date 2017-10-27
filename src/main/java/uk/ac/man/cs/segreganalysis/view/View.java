@@ -1,16 +1,35 @@
 package uk.ac.man.cs.segreganalysis.view;
 
-import uk.ac.man.cs.segreganalysis.SegregAnalysis;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class View extends JFrame {
+
+    public static final int LABEL_X = 10;
+    public static final int FIELD_X = 180;
+
+    public static final int LABEL_WIDTH = 140;
+    public static final int FIELD_WIDTH = 200;
+
+    public static final int HEIGHT = 25;
+
+    public static final int PANEL_WIDTH = 390;
+    public static final int TITLE_WIDTH = 390/2;
+
+
+    static int y_coordinate = 20;
+
+
+
+
+
+
     public JTextField sizeText;
     public JComboBox algorithmDropdown; // choose algorithm
     public JComboBox generatorDropdown;
     public JTextField stepsText;
+    public JTextField maxLinksPerStepText;
+    public JLabel maxLinksLabel;
+
     public JButton applyButton;
 
     public View(String title){
@@ -23,64 +42,108 @@ public class View extends JFrame {
         populateView(panel);
 
         pack();
-        setSize(340, 210);
+        setSize(PANEL_WIDTH, 500);
         setLocationRelativeTo(null); // center
 
     }
 
     private void populateView(JPanel panel) {
 
+        // Calculate center x
+        int xCenter = PANEL_WIDTH/2 - TITLE_WIDTH/2;
+
         panel.setLayout(null);
+
+        JLabel graphGeneration = new JLabel("<html><font color='gray'><b>Random Graph Generation</b></font>");
+        graphGeneration.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
+        panel.add(graphGeneration);
+
+        y_coordinate += 30;
+
 
         // graph size
 
         JLabel sizeLabel = new JLabel("Graph size:");
-        sizeLabel.setBounds(10,20,100,25);
+        sizeLabel.setBounds(LABEL_X,y_coordinate,LABEL_WIDTH, HEIGHT);
         panel.add(sizeLabel);
 
         sizeText = new JTextField(20);
-        sizeText.setBounds(140,20,165,25);
+        sizeText.setBounds(FIELD_X,y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(sizeText);
+
+        y_coordinate += 30;
 
 
         // type of generator
 
         JLabel genLabel = new JLabel("Generator type:");
-        genLabel.setBounds(10,50,100,25);
+        genLabel.setBounds(LABEL_X,y_coordinate,LABEL_WIDTH, HEIGHT);
         panel.add(genLabel);
 
         String[] generatorTypes = {"Preferential Attachment", "Random", "Random Euclidean"};
         generatorDropdown = new JComboBox(generatorTypes);
-        generatorDropdown.setBounds(140,50,165,25);
+        generatorDropdown.setBounds(FIELD_X,y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(generatorDropdown);
+
+        y_coordinate += 30;
+
+
+        // max links per step for preferential attachment
+
+        maxLinksLabel = new JLabel("Max links per step:");
+        maxLinksLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
+        panel.add(maxLinksLabel);
+
+        maxLinksPerStepText = new JTextField(20);
+        maxLinksPerStepText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(maxLinksPerStepText);
+
+        y_coordinate += 60;
+
+
+        // MODEL OPTIONS
+
+        JLabel segregationModelOptions = new JLabel("<html><b><html><font color='gray'><b>Segregation Model Options</b></font></b>");
+        segregationModelOptions.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
+        panel.add(segregationModelOptions);
+
+        y_coordinate += 30;
+
 
 
         // type of algorithm applied
 
-        JLabel algLabel = new JLabel("Algorithm:");
-        algLabel.setBounds(10,80,100,25);
+        JLabel algLabel = new JLabel("Segregation Model:");
+        algLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,25);
         panel.add(algLabel);
 
         String[] algorithms = {"Henry", "Schelling"};
         algorithmDropdown = new JComboBox(algorithms);
-        algorithmDropdown.setBounds(140,80,165,25);
+        algorithmDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(algorithmDropdown);
+
+        y_coordinate += 30;
+
 
 
         // number of steps of the algorithm
 
         JLabel stepsLabel = new JLabel("Steps:");
-        stepsLabel.setBounds(10,110,100,25);
+        stepsLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
         panel.add(stepsLabel);
 
         stepsText = new JTextField(20);
-        stepsText.setBounds(140,110,165,25);
+        stepsText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(stepsText);
+
+        y_coordinate += 50;
+
+
 
         // Creating button
 
         applyButton = new JButton("Generate");
-        applyButton.setBounds(10, 150, 90, 25);
+        applyButton.setBounds(xCenter, y_coordinate, TITLE_WIDTH,  HEIGHT);
         panel.add(applyButton);
 
     }
