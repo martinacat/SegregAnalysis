@@ -1,9 +1,6 @@
 package uk.ac.man.cs.segreganalysis.models.indices;
 
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-
-import java.util.Iterator;
 
 public class YulesQIndex {
 

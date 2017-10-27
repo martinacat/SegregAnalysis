@@ -9,8 +9,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 import uk.ac.man.cs.segreganalysis.controller.Controller;
-import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.HenryModel;
+import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.view.View;
 import uk.ac.man.cs.segreganalysis.view.XYChart;
 

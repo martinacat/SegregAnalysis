@@ -1,8 +1,7 @@
 package uk.ac.man.cs.segreganalysis.models;
 
-import org.graphstream.graph.*;
-
-import java.util.UUID;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 
 /*  Based on the model broposed in
     A. D. Henry, P. Pralat, C. Zhang, "Emergence of segregation in evolving social networks"
