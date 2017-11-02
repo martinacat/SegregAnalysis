@@ -11,6 +11,7 @@ import org.jfree.ui.RefineryUtilities;
 import uk.ac.man.cs.segreganalysis.controller.Controller;
 import uk.ac.man.cs.segreganalysis.models.HenryModel;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
+import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
 import uk.ac.man.cs.segreganalysis.view.View;
 import uk.ac.man.cs.segreganalysis.view.XYChart;
 
@@ -81,29 +82,32 @@ public class SegregAnalysis {
 
 
         // segregation index
-        DuncanSegregationIndex index = new DuncanSegregationIndex(graph);
+        DuncanSegregationIndex DSIndex = new DuncanSegregationIndex(graph);
+        YulesQIndex yulesQIndex = new YulesQIndex(graph);
 
         // iterative model
         HenryModel henryModel = new HenryModel(graph);
 
         // dataset for plotting graph jfree
         final XYSeriesCollection dataset = new XYSeriesCollection( );
-        final XYSeries duncan = new XYSeries( "DSI Duncan Segregation Index" );
-
+        final XYSeries duncan = new XYSeries( "DSI" );
+        final XYSeries yules = new XYSeries( "Yule's Q" );
 
 
         // iterations of the algorithm
         int i = steps;
         while (i > 0) {
-            duncan.add(i, index.calculate());
+            duncan.add(i, DSIndex.calculate());
+            yules.add(i, yulesQIndex.movingAverage());
             henryModel.iteration();
             i--;
         }
 
         dataset.addSeries(duncan);
+        dataset.addSeries(yules);
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",
-                "Duncan Segregation index at each step", dataset);
+                "", dataset);
 
         chart.pack( );
         RefineryUtilities.centerFrameOnScreen( chart );

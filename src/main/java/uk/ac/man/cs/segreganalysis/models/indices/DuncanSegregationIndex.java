@@ -57,8 +57,12 @@ public class DuncanSegregationIndex {
                 }
             }
 
-            // Duncan
-            result += Math.abs((float)posNeighbours/(float)pos - (float)negNeighbours/(float)neg);
+            if ((float)pos - (float)negNeighbours/(float)neg == 0) {
+                result = 0;
+            }
+            else {
+                result += Math.abs((float)posNeighbours/(float)pos - (float)negNeighbours/(float)neg);
+            }
 
             posNeighbours = 0;
             negNeighbours = 0;
