@@ -36,7 +36,7 @@ public class SegregAnalysis {
 
 
         Graph graph = new SingleGraph("Network");
-        //graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
+        graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
 
         Generator gen;
 
@@ -72,11 +72,11 @@ public class SegregAnalysis {
             Node n = iter.next();
             if (Math.random() > 0.5) {
                 n.addAttribute("gender", "male");
-                n.addAttribute("ui.style", "fill-color: rgb(255,0,255);");
+                n.addAttribute("ui.class", "male");
             }
             else {
                 n.addAttribute("gender", "female");
-                n.addAttribute("ui.style", "fill-color: rgb(0,200,255);");
+                n.addAttribute("ui.class", "female");
             }
         }
 
@@ -90,20 +90,20 @@ public class SegregAnalysis {
 
         // dataset for plotting graph jfree
         final XYSeriesCollection dataset = new XYSeriesCollection( );
-        final XYSeries duncan = new XYSeries( "DSI" );
+        //final XYSeries duncan = new XYSeries( "DSI" );
         final XYSeries yules = new XYSeries( "Yule's Q" );
 
 
         // iterations of the algorithm
         int i = steps;
         while (i > 0) {
-            duncan.add(i, DSIndex.calculate());
+            //duncan.add(i, DSIndex.calculate());
             yules.add(i, yulesQIndex.movingAverage());
             henryModel.iteration();
             i--;
         }
 
-        dataset.addSeries(duncan);
+        //dataset.addSeries(duncan);
         dataset.addSeries(yules);
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",

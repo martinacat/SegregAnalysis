@@ -8,7 +8,7 @@ import org.graphstream.graph.Graph;
  */
 public class HenryModel {
 
-    Graph graph;
+    private Graph graph;
 
     public HenryModel(Graph g){
         graph = g;
@@ -76,7 +76,7 @@ public class HenryModel {
 
     private boolean isToBeDeleted(Edge edge) {
         // calculate attribute distance todo
-        calculateAttributeDistance(edge);
+        // calculateAttributeDistance(edge);
 
         return (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) ;
     }

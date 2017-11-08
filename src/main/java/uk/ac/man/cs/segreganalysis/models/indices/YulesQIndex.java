@@ -6,7 +6,7 @@ import org.graphstream.graph.Node;
 
 public class YulesQIndex {
 
-    Graph graph;
+    private Graph graph;
     float avg;
 
     /*
@@ -31,25 +31,30 @@ public class YulesQIndex {
 
 
     // done for each node and averaged
-    public float calculate(int node) {
-        Node n = graph.getNode(node);
-        int a = 0; // internal links
-        int b = 0; // external links
-        int c = 0; // non-links
-        int d = 0; // non-links
+    public float calculate(int n) {
+
+        Node node = graph.getNode(n);
+
+        int a = 0; // same - tie
+        int b = 0; // diff - tie
+        int c = 0; // same - no tie
+        int d = 0; // diff - no tie
 
         // count tied nodes
-        for(Edge e:n.getEachEdge()) {
-            if (e.getOpposite(n).getAttribute("gender") == n.getAttribute("gender")) {
+        for(Edge e : node.getEachEdge()) {
+            if (e.getOpposite(node).getAttribute("gender").equals(node.getAttribute("gender"))) {
                 a++;
             }
+
             else {
                 b++;
             }
         }
-        for (Node node1:graph.getEachNode()) {
-            if (!node1.hasEdgeToward(node)) {
-                if (n.getAttribute("gender")== node1.getAttribute("gender")) {
+
+        for (Node x : graph.getEachNode()) {
+            if (!x.hasEdgeBetween(node) && x != node) { // if there is no tie between x and n
+
+                if (node.getAttribute("gender").equals(x.getAttribute("gender"))) {
                     c++;
                 }
                 else {
@@ -58,7 +63,7 @@ public class YulesQIndex {
             }
         }
 
-        if (((a * d) + (b * c)) == 0) {
+        if ((float)((a * d) + (b * c)) == 0) {
             return 0;
         }
 
