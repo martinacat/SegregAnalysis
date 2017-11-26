@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSource;
+import org.graphstream.stream.file.FileSourceFactory;
 import org.graphstream.ui.view.Viewer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -18,6 +20,7 @@ import uk.ac.man.cs.segreganalysis.view.XYChart;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Iterator;
 
 public class SimulationController implements ActionListener{
@@ -65,7 +68,24 @@ public class SimulationController implements ActionListener{
     private void getParametersFromView() {
 
         // if no file is selected, generated random graph
-        if (view.fileBrowseField.getText().endsWith(".txt")) {
+        if (view.fileBrowseField.getText().endsWith(".dgs")) {
+            String filePath = view.fileBrowseField.getText();
+
+            FileSource fs = null;
+            try {
+                fs = FileSourceFactory.sourceFor(filePath);
+                fs.addSink(graph);
+
+                fs.readAll(filePath);
+            } catch( IOException e) {
+
+            } finally {
+                fs.removeSink(graph);
+            }
+
+            for (Node node : graph) {
+                node.addAttribute("ui.label", node.getId());
+            }
 
         } else {
             NetworkGeneratorController networkGeneratorController = new NetworkGeneratorController(view);

@@ -59,7 +59,7 @@ public class View extends JFrame {
         panel.setLayout(null);
 
 
-        JLabel importGraph = new JLabel("<html><font color='gray'><b>Import your Graph (txt)</b></font>");
+        JLabel importGraph = new JLabel("<html><font color='gray'><b>Import your Graph (.dsg)</b></font>");
         importGraph.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
         panel.add(importGraph);
 
@@ -78,7 +78,7 @@ public class View extends JFrame {
 
 
         JLabel graphGeneration = new JLabel("<html><font color='gray'><b>or Generate a Random Graph</b></font>");
-        graphGeneration.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT+5);
+        graphGeneration.setBounds(xCenter, y_coordinate, TITLE_WIDTH+20, HEIGHT+5);
         panel.add(graphGeneration);
 
         y_coordinate += 30;
