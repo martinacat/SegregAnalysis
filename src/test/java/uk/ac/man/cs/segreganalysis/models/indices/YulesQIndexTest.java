@@ -29,26 +29,23 @@ class YulesQIndexTest {
 
 
         int indexOfB = graph.getNode("B").getIndex();
-        System.out.println("Index of B "+indexOfB);
 
         graph.addEdge("BA", "B", "A");
         graph.addEdge("BC", "B", "C");
         graph.addEdge("BE", "B", "E");
 
-        graph.display();
-
         YulesQIndex index = new YulesQIndex(graph);
-        assertEquals(1.0, index.calculate(indexOfB));
+        assertEquals(1, index.calculate(indexOfB));
 
-        graph.removeEdge("BA");
         graph.removeEdge("BC");
-        graph.removeEdge("BE");
-
-        graph.addEdge("BA", "B", "A");
-        graph.addEdge("BE", "B", "E");
         graph.addEdge("BF", "B", "F");
 
         assertEquals(-0.3333333432674408, index.calculate(indexOfB));
+
+        graph.removeEdge("BA");
+        graph.addEdge("BD", "B", "D");
+
+        assertEquals(-1, index.calculate(indexOfB));
 
     }
 

@@ -31,6 +31,10 @@ public class View extends JFrame {
     public JLabel maxLinksLabel;
 
     public JButton applyButton;
+    public JButton importButton;
+
+    public JTextField fileBrowseField;
+
 
     public View(String title){
 
@@ -54,8 +58,27 @@ public class View extends JFrame {
 
         panel.setLayout(null);
 
-        JLabel graphGeneration = new JLabel("<html><font color='gray'><b>Random Graph Generation</b></font>");
-        graphGeneration.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
+
+        JLabel importGraph = new JLabel("<html><font color='gray'><b>Import your Graph (txt)</b></font>");
+        importGraph.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
+        panel.add(importGraph);
+
+        y_coordinate += 30;
+
+        fileBrowseField = new JTextField(20);
+        fileBrowseField.setBounds(10,y_coordinate, 275, HEIGHT);
+        panel.add(fileBrowseField);
+
+
+        importButton = new JButton("Browse");
+        importButton.setBounds(FIELD_X+100, y_coordinate, 100,  HEIGHT);
+        panel.add(importButton);
+
+        y_coordinate += 40;
+
+
+        JLabel graphGeneration = new JLabel("<html><font color='gray'><b>or Generate a Random Graph</b></font>");
+        graphGeneration.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT+5);
         panel.add(graphGeneration);
 
         y_coordinate += 30;
@@ -142,7 +165,7 @@ public class View extends JFrame {
 
         // Creating button
 
-        applyButton = new JButton("Generate");
+        applyButton = new JButton("Start Simulation");
         applyButton.setBounds(xCenter, y_coordinate, TITLE_WIDTH,  HEIGHT);
         panel.add(applyButton);
 

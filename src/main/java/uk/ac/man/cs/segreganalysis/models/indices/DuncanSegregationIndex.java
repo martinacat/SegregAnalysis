@@ -28,7 +28,7 @@ public class DuncanSegregationIndex {
 
         }
 
-        System.out.println("total males: " + neg + "total females: " + pos);
+        System.out.println("total males: " + neg + "\ntotal females: " + pos);
 
     }
 
