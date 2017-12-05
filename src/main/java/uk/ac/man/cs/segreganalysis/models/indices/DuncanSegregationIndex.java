@@ -3,6 +3,7 @@ package uk.ac.man.cs.segreganalysis.models.indices;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 
 import java.util.Iterator;
 
@@ -28,7 +29,7 @@ public class DuncanSegregationIndex {
 
         }
 
-        System.out.println("total males: " + neg + "\ntotal females: " + pos);
+        SegregAnalysis.logger.info("total males: " + neg + ", total females: " + pos);
 
     }
 
