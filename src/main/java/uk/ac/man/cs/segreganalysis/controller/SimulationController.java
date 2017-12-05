@@ -130,7 +130,7 @@ public class SimulationController implements ActionListener{
             henryModel.iteration();
         }
 
-        dataset.addSeries(duncan);
+        //dataset.addSeries(duncan);
         dataset.addSeries(yules);
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",
@@ -140,6 +140,7 @@ public class SimulationController implements ActionListener{
         RefineryUtilities.centerFrameOnScreen( chart );
         chart.setVisible( true );
 
+        // GraphStream
         Viewer viewer = graph.display();
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 

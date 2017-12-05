@@ -3,6 +3,10 @@ package uk.ac.man.cs.segreganalysis.view;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.axis.NumberAxis;
+
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -30,7 +34,12 @@ public class XYChart extends JFrame {
 
         ChartPanel chartPanel = new ChartPanel( xylineChart );
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
-        final XYPlot plot = xylineChart.getXYPlot( );
+        final XYPlot xyPlot = xylineChart.getXYPlot( );
+
+        // make the bars static
+        NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
+        range.setRange(-1.00, 1.00);
+        range.setTickUnit(new NumberTickUnit(0.1));
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
         renderer.setBaseShapesVisible(false); // no data points
@@ -40,7 +49,7 @@ public class XYChart extends JFrame {
         renderer.setSeriesStroke( 0 , new BasicStroke( 1.0f ) );
         renderer.setSeriesStroke( 1 , new BasicStroke( 1.0f ) );
         renderer.setSeriesStroke( 2 , new BasicStroke( 1.0f ) );
-        plot.setRenderer( renderer );
+        xyPlot.setRenderer( renderer );
         setContentPane( chartPanel );
 
     }
