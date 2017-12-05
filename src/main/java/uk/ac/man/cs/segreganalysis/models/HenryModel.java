@@ -2,6 +2,7 @@ package uk.ac.man.cs.segreganalysis.models;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import uk.ac.man.cs.segreganalysis.view.View;
 
 /*  Based on the model broposed in
     A. D. Henry, P. Pralat, C. Zhang, "Emergence of segregation in evolving social networks"
@@ -10,8 +11,11 @@ public class HenryModel {
 
     private Graph graph;
 
-    public HenryModel(Graph g){
-        graph = g;
+    private View view;
+
+    public HenryModel(Graph graph, View view){
+        this.graph = graph;
+        this.view = view;
     }
 
     public void iteration() {
@@ -83,7 +87,12 @@ public class HenryModel {
 
     // todo
     private double calculateAttributeDistance(Edge edge) {
-        return Math.random();
+        double attributeDistance = 0;
+        if (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) {
+            attributeDistance = 1;
+        }
+        attributeDistance = attributeDistance * Double.parseDouble(view.aversionText.getText());
+        return attributeDistance;
     }
 
 

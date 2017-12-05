@@ -3,10 +3,12 @@ package uk.ac.man.cs.segreganalysis.controller;
 import org.apache.commons.lang3.StringUtils;
 import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.view.View;
 
 import javax.swing.*;
+import java.util.Iterator;
 
 public class NetworkGeneratorController {
     private View view;
@@ -55,6 +57,7 @@ public class NetworkGeneratorController {
 
         return graph;
 
-
     }
+
+
 }

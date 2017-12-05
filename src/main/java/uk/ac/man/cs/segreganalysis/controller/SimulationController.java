@@ -75,9 +75,10 @@ public class SimulationController implements ActionListener{
             try {
                 fs = FileSourceFactory.sourceFor(filePath);
                 fs.addSink(graph);
-
                 fs.readAll(filePath);
+
             } catch( IOException e) {
+
 
             } finally {
                 fs.removeSink(graph);
@@ -89,9 +90,11 @@ public class SimulationController implements ActionListener{
 
         } else {
             NetworkGeneratorController networkGeneratorController = new NetworkGeneratorController(view);
-            System.out.println("Graph being generated");
             graph = networkGeneratorController.generate(graph);
         }
+
+        AttributesController.initialiseAttributes(graph);
+
 
 
 
@@ -107,28 +110,12 @@ public class SimulationController implements ActionListener{
     private void start() {
         graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
 
-        // initialise random attribute
-        Iterator<Node> iterator = graph.iterator();
-
-        while (iterator.hasNext()){
-            Node n = iterator.next();
-            if (Math.random() > 0.5) {
-                n.addAttribute("gender", "male");
-                n.addAttribute("ui.class", "male");
-            }
-            else {
-                n.addAttribute("gender", "female");
-                n.addAttribute("ui.class", "female");
-            }
-        }
-
-
         // segregation index
         DuncanSegregationIndex DSIndex = new DuncanSegregationIndex(graph);
         YulesQIndex yulesQIndex = new YulesQIndex(graph);
 
         // iterative model
-        HenryModel henryModel = new HenryModel(graph);
+        HenryModel henryModel = new HenryModel(graph, view);
 
         // dataset for plotting graph jfree
         final XYSeriesCollection dataset = new XYSeriesCollection( );

@@ -26,8 +26,13 @@ public class View extends JFrame {
     public JTextField sizeText;
     public JComboBox algorithmDropdown; // choose algorithm
     public JComboBox generatorDropdown;
+    public JComboBox decayDropdown;
+
     public JTextField stepsText;
+    public JTextField aversionText;
     public JTextField maxLinksPerStepText;
+    public JTextField numberOfAttributes;
+
     public JLabel maxLinksLabel;
 
     public JButton applyButton;
@@ -46,7 +51,7 @@ public class View extends JFrame {
         populateView(panel);
 
         pack();
-        setSize(PANEL_WIDTH, 500);
+        setSize(PANEL_WIDTH, 600);
         setLocationRelativeTo(null); // center
 
     }
@@ -121,7 +126,7 @@ public class View extends JFrame {
         maxLinksPerStepText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(maxLinksPerStepText);
 
-        y_coordinate += 60;
+        y_coordinate += 50;
 
 
         // MODEL OPTIONS
@@ -159,11 +164,52 @@ public class View extends JFrame {
         stepsText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(stepsText);
 
-        y_coordinate += 50;
+        y_coordinate += 30;
+
+        // number of steps of the algorithm
+
+        JLabel aversionBiasLabel = new JLabel("Aversion Bias:");
+        aversionBiasLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
+        panel.add(aversionBiasLabel);
+
+        aversionText = new JTextField(20);
+        aversionText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(aversionText);
+
+        y_coordinate += 30;
+
+        JLabel decayLabel = new JLabel("Bias decay:");
+        decayLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,25);
+        panel.add(decayLabel);
+
+        String[] decay = {"None", "Linear", "Exponential", "Custom"};
+        decayDropdown = new JComboBox(decay);
+        decayDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(decayDropdown);
+
+        y_coordinate += 40;
+
+        // MODEL OPTIONS
+
+        JLabel attributesOptions = new JLabel("<html><b><html><font color='gray'><b>Attributes</b></font></b>");
+        attributesOptions.setBounds(xCenter, y_coordinate, TITLE_WIDTH, HEIGHT);
+        panel.add(attributesOptions);
+
+        y_coordinate += 30;
+
+
+
+
+
+
+
+
 
 
 
         // Creating button
+        y_coordinate += 50;
+
 
         applyButton = new JButton("Start Simulation");
         applyButton.setBounds(xCenter, y_coordinate, TITLE_WIDTH,  HEIGHT);
