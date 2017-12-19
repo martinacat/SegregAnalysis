@@ -69,6 +69,7 @@ public class SimulationController implements ActionListener{
 
         // if no file is selected, generated random graph
         if (view.fileBrowseField.getText().endsWith(".dgs")) {
+            SegregAnalysis.logger.info("Reading network from file %s ", view.fileBrowseField.getText());
             String filePath = view.fileBrowseField.getText();
 
             FileSource fs = null;
@@ -89,6 +90,7 @@ public class SimulationController implements ActionListener{
             }
 
         } else {
+            SegregAnalysis.logger.info("Generating a network");
             NetworkGeneratorController networkGeneratorController = new NetworkGeneratorController(view);
             graph = networkGeneratorController.generate(graph);
         }
@@ -130,7 +132,7 @@ public class SimulationController implements ActionListener{
             henryModel.iteration();
         }
 
-        //dataset.addSeries(duncan);
+        dataset.addSeries(duncan);
         dataset.addSeries(yules);
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",
