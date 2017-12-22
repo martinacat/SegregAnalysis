@@ -8,7 +8,9 @@ import java.util.Iterator;
 public class AttributesController {
 
     public static void initialiseAttributes(Graph graph) {
-        // initialise random attribute
+
+
+        // initialise random attributes
         Iterator<Node> iterator = graph.iterator();
 
         while (iterator.hasNext()){

@@ -28,7 +28,6 @@ public class SimulationController implements ActionListener{
 
     // fields of the view
     int steps = 0;
-    int maxLinksPerStep = 0; //
 
 
     public SimulationController(View v){
@@ -68,7 +67,7 @@ public class SimulationController implements ActionListener{
 
         // if no file is selected, generated random graph
         if (view.fileBrowseField.getText().endsWith(".dgs")) {
-            SegregAnalysis.logger.info("Reading network from file %s ", view.fileBrowseField.getText());
+            SegregAnalysis.logger.info("Reading network from file " + view.fileBrowseField.getText());
             String filePath = view.fileBrowseField.getText();
 
             FileSource fs = null;
