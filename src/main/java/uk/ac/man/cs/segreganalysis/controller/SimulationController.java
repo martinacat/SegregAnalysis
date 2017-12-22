@@ -21,7 +21,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Iterator;
 
 public class SimulationController implements ActionListener{
     View view;
@@ -43,11 +42,11 @@ public class SimulationController implements ActionListener{
         view.generatorDropdown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (view.generatorDropdown.getSelectedIndex() != 0) {
-                    view.maxLinksLabel.setVisible(false);
+                    view.maxLinksPerStepLabel.setVisible(false);
                     view.maxLinksPerStepText.setVisible(false);
                 }
                 else {
-                    view.maxLinksLabel.setVisible(true);
+                    view.maxLinksPerStepLabel.setVisible(true);
                     view.maxLinksPerStepText.setVisible(true);
                 }
                 view.maxLinksPerStepText.revalidate();
