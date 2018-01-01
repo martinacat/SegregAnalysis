@@ -13,13 +13,13 @@ public class FileBrowserController  implements ActionListener {
     public FileBrowserController(View v) {
         view = v;
 
-        view.importButton.addActionListener(this);
+        view.getImportButton().addActionListener(this);
 
     }
 
     public void actionPerformed( ActionEvent e ) {
 
-        if (e.getSource() == view.importButton) {
+        if (e.getSource() == view.getImportButton()) {
 
             final JFileChooser fileChooser = new JFileChooser();
 
@@ -27,7 +27,7 @@ public class FileBrowserController  implements ActionListener {
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                view.fileBrowseField.setText(selectedFile.getAbsolutePath().toString());
+                view.getFileBrowseField().setText(selectedFile.getAbsolutePath().toString());
             }
 
 

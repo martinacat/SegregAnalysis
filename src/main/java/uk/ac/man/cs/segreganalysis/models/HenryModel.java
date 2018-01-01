@@ -91,7 +91,7 @@ public class HenryModel {
         if (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) {
             attributeDistance = 1;
         }
-        attributeDistance = attributeDistance * Double.parseDouble(view.aversionText.getText());
+        attributeDistance = attributeDistance * Double.parseDouble(view.getAversionText().getText());
         return attributeDistance;
     }
 

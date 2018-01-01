@@ -23,22 +23,23 @@ public class View extends JFrame {
 
 
 
-    public JComboBox<String> algorithmDropdown; // choose algorithm
-    public JComboBox<String> generatorDropdown;
-    public JComboBox<String> decayDropdown;
+    private JComboBox<String> algorithmDropdown; // choose algorithm
+    private JComboBox<String> generatorDropdown;
+    private JComboBox<String> decayDropdown;
 
-    public JTextField fileBrowseField;
-    public JTextField sizeText;
-    public JTextField stepsText;
-    public JTextField aversionText;
-    public JTextField maxLinksPerStepText;
-    public JTextField numberOfAttributes;
+    private JTextField fileBrowseField;
+    private JTextField sizeText;
+    private JTextField stepsText;
+    private JTextField aversionText;
+    private JTextField maxLinksPerStepText;
+    private JTextField numberOfAttributes;
 
-    public JLabel maxLinksPerStepLabel;
+    private JLabel maxLinksPerStepLabel;
 
-    public final JButton applyButton = new JButton("Start Simulation");
-    public JButton importButton;
-
+    private final JButton applyButton = new JButton("Start Simulation");
+    private JButton importButton;
+    private JLabel aversionBiasLabel;
+    private JLabel decayLabel;
 
 
     public View(String title){
@@ -82,8 +83,8 @@ public class View extends JFrame {
 
         container.add(tabbedPane);
 
-        applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        container.add(applyButton);
+        getApplyButton().setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(getApplyButton());
 
     }
 
@@ -110,12 +111,12 @@ public class View extends JFrame {
 
         fromFileRadioButton.setBounds(10, y_coordinate, 210, HEIGHT);
         buttonsPanel.add(fromFileRadioButton);
-        fileBrowseField = new JTextField();
-        fileBrowseField.setBounds(250, y_coordinate, 150, HEIGHT);
-        importButton = new JButton("Browse");
-        importButton.setBounds(400, y_coordinate, 55, HEIGHT);
-        buttonsPanel.add(fileBrowseField);
-        buttonsPanel.add(importButton);
+        setFileBrowseField(new JTextField());
+        getFileBrowseField().setBounds(250, y_coordinate, 150, HEIGHT);
+        setImportButton(new JButton("Browse"));
+        getImportButton().setBounds(400, y_coordinate, 55, HEIGHT);
+        buttonsPanel.add(getFileBrowseField());
+        buttonsPanel.add(getImportButton());
 
         y_coordinate += 30;
 
@@ -137,29 +138,29 @@ public class View extends JFrame {
 
         JLabel graphSizeLabel = new JLabel("Graph size: ");
         graphSizeLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        sizeText = new JTextField();
-        sizeText.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+        setSizeText(new JTextField());
+        getSizeText().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(graphSizeLabel);
-        optionsPanel.add(sizeText);
+        optionsPanel.add(getSizeText());
 
         y_coordinate += 30;
 
         JLabel generatorTypeLabel = new JLabel("Generator type: ");
         generatorTypeLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
         String[] generatorTypes = {"Preferential Attachment", "Random", "Random Euclidean"};
-        generatorDropdown = new JComboBox<>(generatorTypes);
-        generatorDropdown.setBounds(FIELD_X, y_coordinate, 200, HEIGHT);
+        setGeneratorDropdown(new JComboBox<>(generatorTypes));
+        getGeneratorDropdown().setBounds(FIELD_X, y_coordinate, 200, HEIGHT);
         optionsPanel.add(generatorTypeLabel);
-        optionsPanel.add(generatorDropdown);
+        optionsPanel.add(getGeneratorDropdown());
 
         y_coordinate += 30;
 
-        maxLinksPerStepLabel = new JLabel("Max Links per step: ");
-        maxLinksPerStepLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        maxLinksPerStepText = new JTextField();
-        maxLinksPerStepText.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
-        optionsPanel.add(maxLinksPerStepLabel);
-        optionsPanel.add(maxLinksPerStepText);
+        setMaxLinksPerStepLabel(new JLabel("Max Links per step: "));
+        getMaxLinksPerStepLabel().setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
+        setMaxLinksPerStepText(new JTextField());
+        getMaxLinksPerStepText().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+        optionsPanel.add(getMaxLinksPerStepLabel());
+        optionsPanel.add(getMaxLinksPerStepText());
 
         // add everything to a container panel
         JPanel panel = new JPanel();
@@ -180,18 +181,6 @@ public class View extends JFrame {
 
         y_coordinate = 40;
 
-        // type of algorithm applied
-
-        JLabel algLabel = new JLabel("Algorithm type:");
-        algLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
-        panel.add(algLabel);
-
-        String[] algorithmTypes = {"Dissimilarity", "Affinity", "Both"};
-        algorithmDropdown = new JComboBox<>(algorithmTypes);
-        algorithmDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(algorithmDropdown);
-
-        y_coordinate += 30;
 
 
         // number of steps of the algorithm
@@ -200,32 +189,46 @@ public class View extends JFrame {
         stepsLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
         panel.add(stepsLabel);
 
-        stepsText = new JTextField(20);
-        stepsText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(stepsText);
+        setStepsText(new JTextField(20));
+        getStepsText().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(getStepsText());
+
+        y_coordinate += 30;
+
+        // type of algorithm applied
+
+        JLabel algLabel = new JLabel("Algorithm type:");
+        algLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
+        panel.add(algLabel);
+
+        String[] algorithmTypes = {"Dissimilarity", "Affinity", "Both"};
+        setAlgorithmDropdown(new JComboBox<>(algorithmTypes));
+        getAlgorithmDropdown().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(getAlgorithmDropdown());
 
         y_coordinate += 30;
 
         // aversion bias
 
-        JLabel aversionBiasLabel = new JLabel("Aversion Bias:");
-        aversionBiasLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
-        panel.add(aversionBiasLabel);
+        setAversionBiasLabel(new JLabel("Aversion Bias:"));
+        getAversionBiasLabel().setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
+        panel.add(getAversionBiasLabel());
 
-        aversionText = new JTextField(20);
-        aversionText.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(aversionText);
+        setAversionText(new JTextField(20));
+        getAversionText().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(getAversionText());
 
         y_coordinate += 30;
 
-        JLabel decayLabel = new JLabel("Bias decay:");
-        decayLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
-        panel.add(decayLabel);
+
+        setDecayLabel(new JLabel("Bias decay:"));
+        getDecayLabel().setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
+        panel.add(getDecayLabel());
 
         String[] decay = {"None", "Linear", "Exponential"};
-        decayDropdown = new JComboBox<>(decay);
-        decayDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(decayDropdown);
+        setDecayDropdown(new JComboBox<>(decay));
+        getDecayDropdown().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(getDecayDropdown());
 
 
 
@@ -299,10 +302,10 @@ public class View extends JFrame {
 
         JLabel numberofAttributesLabel = new JLabel("Number of attributes: ");
         numberofAttributesLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        numberOfAttributes = new JTextField();
-        numberOfAttributes.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+        setNumberOfAttributes(new JTextField());
+        getNumberOfAttributes().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(numberofAttributesLabel);
-        optionsPanel.add(numberOfAttributes);
+        optionsPanel.add(getNumberOfAttributes());
 
         y_coordinate += 30;
 
@@ -322,8 +325,111 @@ public class View extends JFrame {
     }
 
 
+    public JComboBox<String> getAlgorithmDropdown() {
+        return algorithmDropdown;
+    }
 
+    public void setAlgorithmDropdown(JComboBox<String> algorithmDropdown) {
+        this.algorithmDropdown = algorithmDropdown;
+    }
 
+    public JComboBox<String> getGeneratorDropdown() {
+        return generatorDropdown;
+    }
 
+    public void setGeneratorDropdown(JComboBox<String> generatorDropdown) {
+        this.generatorDropdown = generatorDropdown;
+    }
 
+    public JComboBox<String> getDecayDropdown() {
+        return decayDropdown;
+    }
+
+    public void setDecayDropdown(JComboBox<String> decayDropdown) {
+        this.decayDropdown = decayDropdown;
+    }
+
+    public JTextField getFileBrowseField() {
+        return fileBrowseField;
+    }
+
+    public void setFileBrowseField(JTextField fileBrowseField) {
+        this.fileBrowseField = fileBrowseField;
+    }
+
+    public JTextField getSizeText() {
+        return sizeText;
+    }
+
+    public void setSizeText(JTextField sizeText) {
+        this.sizeText = sizeText;
+    }
+
+    public JTextField getStepsText() {
+        return stepsText;
+    }
+
+    public void setStepsText(JTextField stepsText) {
+        this.stepsText = stepsText;
+    }
+
+    public JTextField getAversionText() {
+        return aversionText;
+    }
+
+    public void setAversionText(JTextField aversionText) {
+        this.aversionText = aversionText;
+    }
+
+    public JTextField getMaxLinksPerStepText() {
+        return maxLinksPerStepText;
+    }
+
+    public void setMaxLinksPerStepText(JTextField maxLinksPerStepText) {
+        this.maxLinksPerStepText = maxLinksPerStepText;
+    }
+
+    public JTextField getNumberOfAttributes() {
+        return numberOfAttributes;
+    }
+
+    public void setNumberOfAttributes(JTextField numberOfAttributes) {
+        this.numberOfAttributes = numberOfAttributes;
+    }
+
+    public JLabel getMaxLinksPerStepLabel() {
+        return maxLinksPerStepLabel;
+    }
+
+    public void setMaxLinksPerStepLabel(JLabel maxLinksPerStepLabel) {
+        this.maxLinksPerStepLabel = maxLinksPerStepLabel;
+    }
+
+    public JButton getApplyButton() {
+        return applyButton;
+    }
+
+    public JButton getImportButton() {
+        return importButton;
+    }
+
+    public void setImportButton(JButton importButton) {
+        this.importButton = importButton;
+    }
+
+    public JLabel getAversionBiasLabel() {
+        return aversionBiasLabel;
+    }
+
+    public void setAversionBiasLabel(JLabel aversionBiasLabel) {
+        this.aversionBiasLabel = aversionBiasLabel;
+    }
+
+    public JLabel getDecayLabel() {
+        return decayLabel;
+    }
+
+    public void setDecayLabel(JLabel decayLabel) {
+        this.decayLabel = decayLabel;
+    }
 }

@@ -33,29 +33,48 @@ public class SimulationController implements ActionListener{
     public SimulationController(View v){
 
         view = v;
-        view.applyButton.addActionListener(this);
+        view.getApplyButton().addActionListener(this);
         FileBrowserController fileBrowserController = new FileBrowserController(view);
 
 
         // adapt view to algorithm
-        view.generatorDropdown.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (view.generatorDropdown.getSelectedIndex() != 0) {
-                    view.maxLinksPerStepLabel.setVisible(false);
-                    view.maxLinksPerStepText.setVisible(false);
+        view.getAlgorithmDropdown().addActionListener((ActionEvent e) -> {
+                    if (view.getAlgorithmDropdown().getSelectedItem() != "Dissimilarity") {
+                        view.getAversionText().setVisible(false);
+                        view.getAversionBiasLabel().setVisible(false);
+                        view.getDecayDropdown().setVisible(false);
+                        view.getDecayLabel().setVisible(false);
+                    }
+                    else {
+                        view.getAversionText().setVisible(true);
+                        view.getAversionBiasLabel().setVisible(true);
+                        view.getDecayDropdown().setVisible(true);
+                        view.getDecayLabel().setVisible(true);
+                    }
+                    view.getAversionText().revalidate();
+                    view.getDecayDropdown().revalidate();
                 }
-                else {
-                    view.maxLinksPerStepLabel.setVisible(true);
-                    view.maxLinksPerStepText.setVisible(true);
-                }
-                view.maxLinksPerStepText.revalidate();
-            }}
         );
+
+        view.getGeneratorDropdown().addActionListener(e -> {
+            if (view.getGeneratorDropdown().getSelectedItem() != "Preferential Attachment") {
+                view.getMaxLinksPerStepLabel().setVisible(false);
+                view.getMaxLinksPerStepText().setVisible(false);
+            }
+            else {
+                view.getMaxLinksPerStepLabel().setVisible(true);
+                view.getMaxLinksPerStepText().setVisible(true);
+            }
+            view.getMaxLinksPerStepText().revalidate();
+        }
+        );
+
+
     }
 
     public void actionPerformed( ActionEvent e ) {
 
-        if (e.getSource() == view.applyButton) {
+        if (e.getSource() == view.getApplyButton()) {
             graph = new SingleGraph("Network");
             getParametersFromView();
             start();
@@ -66,9 +85,9 @@ public class SimulationController implements ActionListener{
     private void getParametersFromView() {
 
         // if no file is selected, generated random graph
-        if (view.fileBrowseField.getText().endsWith(".dgs")) {
-            SegregAnalysis.logger.info("Reading network from file " + view.fileBrowseField.getText());
-            String filePath = view.fileBrowseField.getText();
+        if (view.getFileBrowseField().getText().endsWith(".dgs")) {
+            SegregAnalysis.logger.info("Reading network from file " + view.getFileBrowseField().getText());
+            String filePath = view.getFileBrowseField().getText();
 
             FileSource fs = null;
             try {
@@ -98,8 +117,8 @@ public class SimulationController implements ActionListener{
 
 
 
-        if (StringUtils.isNumeric(view.stepsText.getText())) {
-            steps = Integer.parseInt(view.stepsText.getText());
+        if (StringUtils.isNumeric(view.getStepsText().getText())) {
+            steps = Integer.parseInt(view.getStepsText().getText());
         } else {
             JOptionPane.showMessageDialog(view, "Please insert a numeric value for Steps");
         }
