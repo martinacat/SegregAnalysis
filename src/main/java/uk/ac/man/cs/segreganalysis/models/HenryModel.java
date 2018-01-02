@@ -12,10 +12,12 @@ public class HenryModel {
     private Graph graph;
 
     private View view;
+    private double aversionBias;
 
     public HenryModel(Graph graph, View view){
         this.graph = graph;
         this.view = view;
+        this.aversionBias = Double.parseDouble(view.getAversionText().getText());
     }
 
     public void iteration() {
@@ -32,6 +34,10 @@ public class HenryModel {
             rewire(n0, n1);
         }
 
+
+    }
+
+    private void recalculateAversionBias() {
 
     }
 
@@ -91,7 +97,7 @@ public class HenryModel {
         if (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) {
             attributeDistance = 1;
         }
-        attributeDistance = attributeDistance * Double.parseDouble(view.getAversionText().getText());
+        attributeDistance = attributeDistance * aversionBias;
         return attributeDistance;
     }
 

@@ -23,11 +23,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class SimulationController implements ActionListener{
-    View view;
-    Graph graph;
+    private View view;
+    private Graph graph;
 
     // fields of the view
-    int steps = 0;
+    private int steps = 0;
 
 
     public SimulationController(View v){
@@ -37,7 +37,8 @@ public class SimulationController implements ActionListener{
         FileBrowserController fileBrowserController = new FileBrowserController(view);
 
 
-        // adapt view to algorithm
+        // Action Listeners for dynamic view
+
         view.getAlgorithmDropdown().addActionListener((ActionEvent e) -> {
                     if (view.getAlgorithmDropdown().getSelectedItem() != "Dissimilarity") {
                         view.getAversionText().setVisible(false);
@@ -96,7 +97,7 @@ public class SimulationController implements ActionListener{
                 fs.readAll(filePath);
 
             } catch( IOException e) {
-
+                SegregAnalysis.logger.error("Problem reading file");
 
             } finally {
                 fs.removeSink(graph);
