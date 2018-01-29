@@ -43,17 +43,23 @@ public class SimulationController implements ActionListener{
                     if (view.getAlgorithmDropdown().getSelectedItem() != "Dissimilarity") {
                         view.getAversionText().setVisible(false);
                         view.getAversionBiasLabel().setVisible(false);
-                        view.getDecayDropdown().setVisible(false);
-                        view.getDecayLabel().setVisible(false);
+                        view.getBiasEvolutionInTimeDropdown().setVisible(false);
+                        view.getBiasEvolutionLabel().setVisible(false);
+                        view.getBiasEvolutionFunctionLabel().setVisible(false);
+                        view.getBiasEvolutionFunctionLabel().setVisible(false);
+                        view.getBiasEvolutionFunctionDropdown().setVisible(false);
                     }
                     else {
                         view.getAversionText().setVisible(true);
                         view.getAversionBiasLabel().setVisible(true);
-                        view.getDecayDropdown().setVisible(true);
-                        view.getDecayLabel().setVisible(true);
+                        view.getBiasEvolutionInTimeDropdown().setVisible(true);
+                        view.getBiasEvolutionLabel().setVisible(true);
+                        view.getBiasEvolutionFunctionLabel().setVisible(true);
+                        view.getBiasEvolutionFunctionLabel().setVisible(true);
+                        view.getBiasEvolutionFunctionDropdown().setVisible(true);
                     }
                     view.getAversionText().revalidate();
-                    view.getDecayDropdown().revalidate();
+                    view.getBiasEvolutionInTimeDropdown().revalidate();
                 }
         );
 
@@ -85,8 +91,19 @@ public class SimulationController implements ActionListener{
 
     private void getParametersFromView() {
 
-        // if no file is selected, generated random graph
-        if (view.getFileBrowseField().getText().endsWith(".dgs")) {
+        // if fromFileRadioButton is selected
+        if (view.getFromFileRadioButton().isSelected()) {
+            if (view.getFileBrowseField().getText().equals("")) {
+                SegregAnalysis.logger.error("No .dsg file selected");
+                JOptionPane.showMessageDialog(view, "Please select a .dsg file");
+
+            }
+            else if (!view.getFileBrowseField().getText().endsWith(".dgs")) {
+                SegregAnalysis.logger.error("File selected is not the right format");
+                JOptionPane.showMessageDialog(view, "File selected is not the right format," +
+                        " please select a .dsg file");
+
+            }
             SegregAnalysis.logger.info("Reading network from file " + view.getFileBrowseField().getText());
             String filePath = view.getFileBrowseField().getText();
 
@@ -130,6 +147,10 @@ public class SimulationController implements ActionListener{
     private void start() {
         graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
 
+        boolean showDuncan = view.getCheckBoxDSI().isSelected();
+        boolean showYulesQ = view.getCheckBoxYules().isSelected();
+
+
         // segregation index
         DuncanSegregationIndex DSIndex = new DuncanSegregationIndex(graph);
         YulesQIndex yulesQIndex = new YulesQIndex(graph);
@@ -145,13 +166,25 @@ public class SimulationController implements ActionListener{
 
         // iterations of the algorithm
         for (int i = 0; i < steps; i++) {
-            duncan.add(i, DSIndex.calculate());
-            yules.add(i, yulesQIndex.movingAverage());
+
+            if (showDuncan) {
+                duncan.add(i, DSIndex.calculate());
+            }
+
+            if (showYulesQ) {
+                yules.add(i, yulesQIndex.movingAverage());
+            }
+
             henryModel.iteration();
         }
 
-        dataset.addSeries(duncan);
-        dataset.addSeries(yules);
+        if (showDuncan) {
+            dataset.addSeries(duncan);
+        }
+
+        if (showYulesQ) {
+            dataset.addSeries(yules);
+        }
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",
                 "", dataset);

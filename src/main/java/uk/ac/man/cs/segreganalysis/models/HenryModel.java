@@ -38,6 +38,18 @@ public class HenryModel {
     }
 
     private void recalculateAversionBias() {
+        int factor = view.getBiasEvolutionFunctionDropdown().getSelectedIndex();
+        switch (factor) {
+            case 0: // None (constant aversion bias)
+                // do nothing
+                break;
+            case 1: // Linear decay
+                break;
+            case 2: // Exponential decay
+                break;
+            default:
+                break;
+        }
 
     }
 
