@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class FileBrowserController  implements ActionListener {
-    View view;
+    private View view;
 
-    public FileBrowserController(View v) {
+    FileBrowserController(View v) {
         view = v;
 
         view.getImportButton().addActionListener(this);
@@ -19,7 +19,7 @@ public class FileBrowserController  implements ActionListener {
 
     public void actionPerformed( ActionEvent e ) {
 
-        if (e.getSource() == view.getImportButton()) {
+        if (e.getSource() == view.getImportButton() ) {
 
             final JFileChooser fileChooser = new JFileChooser();
 
@@ -27,12 +27,12 @@ public class FileBrowserController  implements ActionListener {
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                view.getFileBrowseField().setText(selectedFile.getAbsolutePath().toString());
+                view.getFileBrowseField().setText(selectedFile.getAbsolutePath());
             }
 
 
-
         }
+
 
     }
 

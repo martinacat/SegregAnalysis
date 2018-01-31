@@ -35,34 +35,24 @@ public class SimulationController implements ActionListener{
         view = v;
         view.getApplyButton().addActionListener(this);
         FileBrowserController fileBrowserController = new FileBrowserController(view);
+        AversionBiasController aversionBiasController = new AversionBiasController(view);
+
 
 
         // Action Listeners for dynamic view
 
         view.getAlgorithmDropdown().addActionListener((ActionEvent e) -> {
                     if (view.getAlgorithmDropdown().getSelectedItem() != "Dissimilarity") {
-                        view.getAversionText().setVisible(false);
-                        view.getAversionBiasLabel().setVisible(false);
-                        view.getBiasEvolutionInTimeDropdown().setVisible(false);
-                        view.getBiasEvolutionLabel().setVisible(false);
-                        view.getBiasEvolutionFunctionLabel().setVisible(false);
-                        view.getBiasEvolutionFunctionLabel().setVisible(false);
-                        view.getBiasEvolutionFunctionDropdown().setVisible(false);
+                        view.getAversionBiasAdvancedSettingsButton().setVisible(false);
                     }
                     else {
-                        view.getAversionText().setVisible(true);
-                        view.getAversionBiasLabel().setVisible(true);
-                        view.getBiasEvolutionInTimeDropdown().setVisible(true);
-                        view.getBiasEvolutionLabel().setVisible(true);
-                        view.getBiasEvolutionFunctionLabel().setVisible(true);
-                        view.getBiasEvolutionFunctionLabel().setVisible(true);
-                        view.getBiasEvolutionFunctionDropdown().setVisible(true);
+                        view.getAversionBiasAdvancedSettingsButton().setVisible(true);
                     }
-                    view.getAversionText().revalidate();
-                    view.getBiasEvolutionInTimeDropdown().revalidate();
+                    view.getAversionBiasAdvancedSettingsButton().revalidate();
                 }
         );
 
+        // max link per step
         view.getGeneratorDropdown().addActionListener(e -> {
             if (view.getGeneratorDropdown().getSelectedItem() != "Preferential Attachment") {
                 view.getMaxLinksPerStepLabel().setVisible(false);
@@ -86,6 +76,10 @@ public class SimulationController implements ActionListener{
             getParametersFromView();
             start();
             graph = null;
+        }
+
+        if (e.getSource() == view.getCheckBoxSave()) {
+            SegregAnalysis.logger.info("Save pressed");
         }
     }
 

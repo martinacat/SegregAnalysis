@@ -1,5 +1,7 @@
 package uk.ac.man.cs.segreganalysis.view;
 
+import uk.ac.man.cs.segreganalysis.controller.AversionBiasController;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -13,20 +15,18 @@ public class View extends JFrame {
     private static final int LABEL_WIDTH = 140;
     private static final int FIELD_WIDTH = 200;
 
-    public static final int HEIGHT = 20;
+    private static final int HEIGHT = 20;
+
+    public final AdvancedSettingsWindow aversionBiasAdvancedSettings =
+            new AdvancedSettingsWindow("Aversion Bias");
 
 
     private static int y_coordinate;
 
-
-
-
-
-
     private JComboBox<String> algorithmDropdown; // choose algorithm
     private JComboBox<String> generatorDropdown;
-    private JComboBox<String> biasEvolutionInTimeDropdown;
-    private JComboBox<String> biasEvolutionFunctionDropdown;
+    private JCheckBox checkBoxYules = new JCheckBox("Yule's Q");
+    private JCheckBox checkBoxDSI = new JCheckBox("DSI (Duncan Segregation Index)");
 
 
     private JTextField fileBrowseField;
@@ -39,13 +39,16 @@ public class View extends JFrame {
     private JLabel maxLinksPerStepLabel;
 
     private final JButton applyButton = new JButton("Start Simulation");
+    private final JButton aversionBiasAdvancedSettingsButton =
+            new JButton("Aversion Bias Settings");
     private JButton importButton;
-    private JLabel aversionBiasLabel;
-    private JLabel biasEvolutionLabel;
-    private JLabel biasEvolutionFunctionLabel;
-    private JCheckBox checkBoxYules = new JCheckBox("Yule's Q");
-    private JCheckBox checkBoxDSI = new JCheckBox("DSI (Duncan Segregation Index)");
+
     private JRadioButton fromFileRadioButton;
+
+
+
+    private final JCheckBox checkBoxSave = new JCheckBox("Save initial graph for comparison");
+    private final JPanel saveAsPanel = new JPanel();
 
 
     public View(String title){
@@ -94,9 +97,6 @@ public class View extends JFrame {
 
     }
 
-    public JRadioButton getFromFileRadioButton() {
-        return fromFileRadioButton;
-    }
 
     /* Creates the panel where the user specifies how the initial
          * graph is generated
@@ -121,9 +121,9 @@ public class View extends JFrame {
 
         fromFileRadioButton.setBounds(10, y_coordinate, 210, HEIGHT);
         buttonsPanel.add(fromFileRadioButton);
-        setFileBrowseField(new JTextField());
+        fileBrowseField = new JTextField();
         getFileBrowseField().setBounds(250, y_coordinate, 150, HEIGHT);
-        setImportButton(new JButton("Browse"));
+        importButton = new JButton("Browse");
         getImportButton().setBounds(400, y_coordinate, 55, HEIGHT);
         buttonsPanel.add(getFileBrowseField());
         buttonsPanel.add(getImportButton());
@@ -132,7 +132,6 @@ public class View extends JFrame {
 
         randomGenerationRadioButton.setBounds(10, y_coordinate , 500, HEIGHT);
         buttonsPanel.add(randomGenerationRadioButton);
-
 
 
         // Second sub-Panel: Generation options
@@ -148,7 +147,7 @@ public class View extends JFrame {
 
         JLabel graphSizeLabel = new JLabel("Graph size: ");
         graphSizeLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        setSizeText(new JTextField("150"));
+        sizeText = new JTextField("150");
         getSizeText().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(graphSizeLabel);
         optionsPanel.add(getSizeText());
@@ -158,16 +157,16 @@ public class View extends JFrame {
         JLabel generatorTypeLabel = new JLabel("Generator type: ");
         generatorTypeLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
         String[] generatorTypes = {"Preferential Attachment", "Random", "Random Euclidean"};
-        setGeneratorDropdown(new JComboBox<>(generatorTypes));
+        generatorDropdown = new JComboBox<>(generatorTypes);
         getGeneratorDropdown().setBounds(FIELD_X, y_coordinate, 200, HEIGHT);
         optionsPanel.add(generatorTypeLabel);
         optionsPanel.add(getGeneratorDropdown());
 
         y_coordinate += 30;
 
-        setMaxLinksPerStepLabel(new JLabel("Max Links per step: "));
+        maxLinksPerStepLabel = new JLabel("Max Links per step: ");
         getMaxLinksPerStepLabel().setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        setMaxLinksPerStepText(new JTextField("3"));
+        maxLinksPerStepText = new JTextField("3");
         getMaxLinksPerStepText().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(getMaxLinksPerStepLabel());
         optionsPanel.add(getMaxLinksPerStepText());
@@ -188,12 +187,11 @@ public class View extends JFrame {
          * how to run the simulation
          */
     private JComponent makeSimulationPanel() {
+
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
         y_coordinate = 40;
-
-
 
         // number of steps of the algorithm
 
@@ -201,7 +199,7 @@ public class View extends JFrame {
         stepsLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
         panel.add(stepsLabel);
 
-        setStepsText(new JTextField("1000",20));
+        stepsText = new JTextField("1000",20);
         getStepsText().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(getStepsText());
 
@@ -214,44 +212,18 @@ public class View extends JFrame {
         panel.add(algorithmTypeLabel);
 
         String[] algorithmTypeChoices = {"Dissimilarity", "Affinity", "Both"};
-        setAlgorithmDropdown(new JComboBox<>(algorithmTypeChoices));
+        algorithmDropdown = new JComboBox<>(algorithmTypeChoices);
         getAlgorithmDropdown().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(getAlgorithmDropdown());
 
-        y_coordinate += 30;
+        y_coordinate += 50;
 
-        // aversion bias
+        // aversion bias settings
 
-        setAversionBiasLabel(new JLabel("Initial aversion Bias:"));
-        getAversionBiasLabel().setBounds(LABEL_X, y_coordinate,LABEL_WIDTH, HEIGHT);
-        panel.add(getAversionBiasLabel());
-
-        setAversionText(new JTextField("1",20));
-        getAversionText().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(getAversionText());
-
-        y_coordinate += 30;
+        aversionBiasAdvancedSettingsButton.setBounds(130, y_coordinate,FIELD_WIDTH, HEIGHT);
+        panel.add(aversionBiasAdvancedSettingsButton);
 
 
-        setBiasEvolutionLabel(new JLabel("Bias evolution in time:"));
-        getBiasEvolutionLabel().setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
-        panel.add(getBiasEvolutionLabel());
-
-        String[] biasEvolutionInTimeChoices = {"Decay", "Rise"};
-        biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
-        biasEvolutionInTimeDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(biasEvolutionInTimeDropdown);
-
-        y_coordinate += 30;
-
-        setBiasEvolutionFunctionLabel(new JLabel("Bias evolution function"));
-        getBiasEvolutionFunctionLabel().setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
-        panel.add(biasEvolutionFunctionLabel);
-
-        String[] biasEvolutionFunctionChoices = {"None", "Linear", "Exponential"};
-        biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
-        biasEvolutionFunctionDropdown.setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
-        panel.add(biasEvolutionFunctionDropdown);
 
 
 
@@ -267,15 +239,28 @@ public class View extends JFrame {
         JPanel panel = new JPanel(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JCheckBox save = new JCheckBox("Save initial graph for comparison");
+
 
         checkBoxYules.setSelected(true);
         checkBoxDSI.setSelected(true);
-        save.setSelected(false);
+        checkBoxSave.setSelected(false);
 
         panel.add(checkBoxYules);
         panel.add(checkBoxDSI);
-        panel.add(save);
+        panel.add(checkBoxSave);
+
+
+        // Second sub-Panel: Attributes Generation options
+        JPanel saveAsPanel = new JPanel();
+        saveAsPanel.setLayout(null);
+        saveAsPanel.setMaximumSize(new Dimension(1000, 50));
+
+        TitledBorder title = BorderFactory.createTitledBorder("Save As...");
+        title.setTitleJustification(TitledBorder.CENTER);
+        saveAsPanel.setBorder(title);
+
+
+        panel.add(saveAsPanel);
 
         return panel;
     }
@@ -324,10 +309,10 @@ public class View extends JFrame {
 
         JLabel numberofAttributesLabel = new JLabel("Number of attributes: ");
         numberofAttributesLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        setNumberOfAttributes(new JTextField());
-        getNumberOfAttributes().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+        numberOfAttributes = new JTextField();
+        numberOfAttributes.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(numberofAttributesLabel);
-        optionsPanel.add(getNumberOfAttributes());
+        optionsPanel.add(numberOfAttributes);
 
         y_coordinate += 30;
 
@@ -350,132 +335,58 @@ public class View extends JFrame {
         return algorithmDropdown;
     }
 
-    public void setAlgorithmDropdown(JComboBox<String> algorithmDropdown) {
-        this.algorithmDropdown = algorithmDropdown;
-    }
 
     public JComboBox<String> getGeneratorDropdown() {
         return generatorDropdown;
-    }
-
-    public void setGeneratorDropdown(JComboBox<String> generatorDropdown) {
-        this.generatorDropdown = generatorDropdown;
-    }
-
-    public JComboBox<String> getBiasEvolutionInTimeDropdown() {
-        return biasEvolutionInTimeDropdown;
     }
 
     public JTextField getFileBrowseField() {
         return fileBrowseField;
     }
 
-    public void setFileBrowseField(JTextField fileBrowseField) {
-        this.fileBrowseField = fileBrowseField;
-    }
-
     public JTextField getSizeText() {
         return sizeText;
-    }
-
-    public void setSizeText(JTextField sizeText) {
-        this.sizeText = sizeText;
     }
 
     public JTextField getStepsText() {
         return stepsText;
     }
 
-    public void setStepsText(JTextField stepsText) {
-        this.stepsText = stepsText;
-    }
-
-    public JTextField getAversionText() {
-        return aversionText;
-    }
-
-    public void setAversionText(JTextField aversionText) {
-        this.aversionText = aversionText;
-    }
-
     public JTextField getMaxLinksPerStepText() {
         return maxLinksPerStepText;
-    }
-
-    public void setMaxLinksPerStepText(JTextField maxLinksPerStepText) {
-        this.maxLinksPerStepText = maxLinksPerStepText;
-    }
-
-    public JTextField getNumberOfAttributes() {
-        return numberOfAttributes;
-    }
-
-    public void setNumberOfAttributes(JTextField numberOfAttributes) {
-        this.numberOfAttributes = numberOfAttributes;
     }
 
     public JLabel getMaxLinksPerStepLabel() {
         return maxLinksPerStepLabel;
     }
 
-    public void setMaxLinksPerStepLabel(JLabel maxLinksPerStepLabel) {
-        this.maxLinksPerStepLabel = maxLinksPerStepLabel;
-    }
-
     public JButton getApplyButton() {
         return applyButton;
+    }
+
+    public JButton getAversionBiasAdvancedSettingsButton() {
+        return aversionBiasAdvancedSettingsButton;
     }
 
     public JButton getImportButton() {
         return importButton;
     }
 
-    public void setImportButton(JButton importButton) {
-        this.importButton = importButton;
-    }
-
-    public JLabel getAversionBiasLabel() {
-        return aversionBiasLabel;
-    }
-
-    public void setAversionBiasLabel(JLabel aversionBiasLabel) {
-        this.aversionBiasLabel = aversionBiasLabel;
-    }
-
-    public JLabel getBiasEvolutionLabel() {
-        return biasEvolutionLabel;
-    }
-
-    public void setBiasEvolutionLabel(JLabel biasEvolutionLabel) {
-        this.biasEvolutionLabel = biasEvolutionLabel;
-    }
-
-    public JLabel getBiasEvolutionFunctionLabel() {
-        return biasEvolutionFunctionLabel;
-    }
-
-    public void setBiasEvolutionFunctionLabel(JLabel biasEvolutionFunctionLabel) {
-        this.biasEvolutionFunctionLabel = biasEvolutionFunctionLabel;
-    }
-
-    public JComboBox<String> getBiasEvolutionFunctionDropdown() {
-        return biasEvolutionFunctionDropdown;
+    public JRadioButton getFromFileRadioButton() {
+        return fromFileRadioButton;
     }
 
     public JCheckBox getCheckBoxYules() {
         return checkBoxYules;
     }
 
-    public void setCheckBoxYules(JCheckBox checkBoxYules) {
-        this.checkBoxYules = checkBoxYules;
-    }
-
     public JCheckBox getCheckBoxDSI() {
         return checkBoxDSI;
     }
 
-    public void setCheckBoxDSI(JCheckBox checkBoxDSI) {
-        this.checkBoxDSI = checkBoxDSI;
+    public JCheckBox getCheckBoxSave() {
+        return checkBoxSave;
     }
+
 
 }

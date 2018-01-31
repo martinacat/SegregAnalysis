@@ -17,7 +17,11 @@ public class HenryModel {
     public HenryModel(Graph graph, View view){
         this.graph = graph;
         this.view = view;
-        this.aversionBias = Double.parseDouble(view.getAversionText().getText());
+
+        if (view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
+            this.aversionBias =
+                    Double.parseDouble(this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().getText());
+        }
     }
 
     public void iteration() {
@@ -38,18 +42,7 @@ public class HenryModel {
     }
 
     private void recalculateAversionBias() {
-        int factor = view.getBiasEvolutionFunctionDropdown().getSelectedIndex();
-        switch (factor) {
-            case 0: // None (constant aversion bias)
-                // do nothing
-                break;
-            case 1: // Linear decay
-                break;
-            case 2: // Exponential decay
-                break;
-            default:
-                break;
-        }
+
 
     }
 
