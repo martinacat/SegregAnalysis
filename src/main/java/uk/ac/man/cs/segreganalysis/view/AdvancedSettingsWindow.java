@@ -11,9 +11,17 @@ public class AdvancedSettingsWindow extends JFrame {
 
     private final JButton applyChangesButton = new JButton("Apply");
     private JTextField initialBiasForAllText = new JTextField("1");
+    private JTextField coefficientText = new JTextField("1", 10);
+
     private final JRadioButton differentForSetsRadioButton = new JRadioButton("Different aversion bias for sets of nodes");
 
     private final JRadioButton sameForAllRadioButton = new JRadioButton("Same initial bias for all the nodes");
+
+    private JTextField[] sizeTextFields = new JTextField[4]; // relative size of set
+
+    private JTextField[] biasTextFields = new JTextField[4]; // aversion bias for that set
+    private final JTextField numberOfSetsText = new JTextField("4",10);
+
 
 
     public AdvancedSettingsWindow (String title) {
@@ -31,6 +39,8 @@ public class AdvancedSettingsWindow extends JFrame {
         setSize(WIDTH, 380);
         setLocationRelativeTo(null); // center
     }
+
+
 
     private void populateView(JPanel container) {
 
@@ -54,10 +64,17 @@ public class AdvancedSettingsWindow extends JFrame {
         biasFunctionLabel.setLabelFor(biasEvolutionFunctionDropdown);
         p.add(biasEvolutionFunctionDropdown);
 
+        JLabel coefficientLabel = new JLabel("Coefficient:", JLabel.TRAILING);
+        p.add(coefficientLabel);
+        coefficientLabel.setLabelFor(coefficientText);
+        coefficientText.setToolTipText("This coefficient will represent the angular c. " +
+                "when \"Linear mode\" is selected, and the exponential coefficient when \"Curve mode\" is selected");
+        p.add(coefficientText);
+
 
         // Lay out the panel p
         SpringUtilities.makeCompactGrid(p,
-                2, 2, //rows, cols
+                3, 2, //rows, cols
                 6, 6,        //initX, initY
                 6, 6);       //xPad, yPad
 
@@ -87,8 +104,8 @@ public class AdvancedSettingsWindow extends JFrame {
 
         JLabel numberOfSetsLabel = new JLabel("Number of sets:", JLabel.TRAILING);
         q.add(numberOfSetsLabel);
-        JTextField numberOfSetsText = new JTextField(10);
         numberOfSetsLabel.setLabelFor(numberOfSetsText);
+        numberOfSetsText.setEnabled(false);
         q.add(numberOfSetsText);
 
         container.add(q);
@@ -120,7 +137,6 @@ public class AdvancedSettingsWindow extends JFrame {
 
 
 
-
         for (int i = 1; i <= 4; i++) {
 
 
@@ -130,17 +146,18 @@ public class AdvancedSettingsWindow extends JFrame {
             JLabel n = new JLabel("bias:", JLabel.TRAILING);
             setsPanel.add(n);
 
-            JTextField textField = new JTextField(10);
-            l.setLabelFor(textField);
-            setsPanel.add(textField);
+            biasTextFields[i-1] = new JTextField("1",10);
+            biasTextFields[i-1].setEnabled(false);
+            l.setLabelFor(biasTextFields[i-1]);
+            setsPanel.add(biasTextFields[i-1]);
 
             JLabel m = new JLabel("size:", JLabel.TRAILING);
             setsPanel.add(m);
 
-            JTextField textField1 = new JTextField(10);
-            m.setLabelFor(textField1);
-
-            setsPanel.add(textField1);
+            sizeTextFields[i-1] = new JTextField("1",10);
+            sizeTextFields[i-1].setEnabled(false);
+            m.setLabelFor(sizeTextFields[i-1]);
+            setsPanel.add(sizeTextFields[i-1]);
         }
 
         //Lay out the panel.
@@ -166,5 +183,34 @@ public class AdvancedSettingsWindow extends JFrame {
         return sameForAllRadioButton;
     }
 
+    public JTextField[] getSizeTextFields() {
+        return sizeTextFields;
+    }
+
+    public JTextField[] getBiasTextFields() {
+        return biasTextFields;
+    }
+
+    public JTextField getNumberOfSetsText() {
+        return numberOfSetsText;
+    }
+
+    public void setBiasTextFields (int index, String value) {
+
+        // check index not out of bound
+        if (index > biasTextFields.length) {return;}
+        if (index < 0) {return;}
+
+        biasTextFields[index].setText(value);
+    }
+
+    public void setSizeTextFields (int index, String value) {
+
+        // check index not out of bound
+        if (index > sizeTextFields.length) {return;}
+        if (index < 0) {return;}
+
+        sizeTextFields[index].setText(value);
+    }
 
 }

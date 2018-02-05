@@ -1,14 +1,20 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import scala.annotation.meta.field;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.view.View;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
-public class AversionBiasController implements ActionListener{
+public class AversionBiasController implements ActionListener {
 
     private View view;
+    private AversionBiasFocusAdapter focusAdapter = new AversionBiasFocusAdapter(this.view);
 
     AversionBiasController(View view) {
 
@@ -16,6 +22,8 @@ public class AversionBiasController implements ActionListener{
         this.view.getAversionBiasAdvancedSettingsButton().addActionListener(this);
         this.view.aversionBiasAdvancedSettings.getDifferentForSetsRadioButton().addActionListener(this);
         this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().addActionListener(this);
+        this.view.aversionBiasAdvancedSettings.getNumberOfSetsText()
+                .addFocusListener(new AversionBiasFocusAdapter(this.view));
 
     }
 
@@ -30,6 +38,18 @@ public class AversionBiasController implements ActionListener{
         if (event.getSource() == this.view.aversionBiasAdvancedSettings.getDifferentForSetsRadioButton()) {
             if (!this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
                 this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().setEnabled(false);
+
+                // enable "number of sets" textfield
+                this.view.aversionBiasAdvancedSettings.getNumberOfSetsText().setEnabled(true);
+
+                // enable textfields for sets' unique aversion bias
+                for (int i = 0;
+                     i < this.view.aversionBiasAdvancedSettings.getBiasTextFields().length;
+                     i++) {
+                    this.view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(true);
+                    this.view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(true);
+
+                }
             }
         }
 
@@ -37,8 +57,19 @@ public class AversionBiasController implements ActionListener{
             if (this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
                 this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().setEnabled(true);
 
+                // disable "number of sets" textfield
+                this.view.aversionBiasAdvancedSettings.getNumberOfSetsText().setEnabled(false);
+
+                // disable textfields for sets' unique aversion bias
+                for (int i = 0;
+                     i < this.view.aversionBiasAdvancedSettings.getBiasTextFields().length;
+                     i++) {
+                    this.view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(false);
+                    this.view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(false);
+
+                }
+
             }
         }
-
     }
 }
