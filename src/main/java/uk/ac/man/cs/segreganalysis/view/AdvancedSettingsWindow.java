@@ -9,8 +9,8 @@ public class AdvancedSettingsWindow extends JFrame {
 
     private final int WIDTH = 300;
 
-    private final JButton applyChangesButton = new JButton("Apply");
     private JTextField initialBiasForAllText = new JTextField("1");
+
     private JTextField coefficientText = new JTextField("1", 10);
 
     private final JRadioButton differentForSetsRadioButton = new JRadioButton("Different aversion bias for sets of nodes");
@@ -21,7 +21,8 @@ public class AdvancedSettingsWindow extends JFrame {
 
     private JTextField[] biasTextFields = new JTextField[4]; // aversion bias for that set
     private final JTextField numberOfSetsText = new JTextField("4",10);
-
+    private JComboBox biasEvolutionInTimeDropdown;
+    private JComboBox biasEvolutionFunctionDropdown;
 
 
     public AdvancedSettingsWindow (String title) {
@@ -41,6 +42,13 @@ public class AdvancedSettingsWindow extends JFrame {
     }
 
 
+    public JComboBox getBiasEvolutionInTimeDropdown() {
+        return biasEvolutionInTimeDropdown;
+    }
+
+    public JComboBox getBiasEvolutionFunctionDropdown() {
+        return biasEvolutionFunctionDropdown;
+    }
 
     private void populateView(JPanel container) {
 
@@ -52,19 +60,24 @@ public class AdvancedSettingsWindow extends JFrame {
 
         JLabel biasEvolutionLabel = new JLabel("Bias evolution in time:", JLabel.TRAILING);
         p.add(biasEvolutionLabel);
-        String[] biasEvolutionInTimeChoices = {"Decay", "Growth"};
-        JComboBox biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
+        String[] biasEvolutionInTimeChoices = {"None", "Decay", "Growth"};
+        biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
         biasEvolutionLabel.setLabelFor(biasEvolutionInTimeDropdown);
         p.add(biasEvolutionInTimeDropdown);
 
         JLabel biasFunctionLabel = new JLabel("Bias evolution function:", JLabel.TRAILING);
         p.add(biasFunctionLabel);
         String[] biasEvolutionFunctionChoices = {"None", "Linear", "Curve"};
-        JComboBox biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
+        biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
+        biasEvolutionFunctionDropdown.setToolTipText(
+                "<html>" +
+                        "<img src=" + getClass().getResource("/decay.png") + "/>Decay curve: e^-bx<br>" +
+                        "<img src=" + getClass().getResource("/growth.png") + "/>Growth curve: 1-exp(-bx)<br> " +
+                        "</html>");
         biasFunctionLabel.setLabelFor(biasEvolutionFunctionDropdown);
         p.add(biasEvolutionFunctionDropdown);
 
-        JLabel coefficientLabel = new JLabel("Coefficient:", JLabel.TRAILING);
+        JLabel coefficientLabel = new JLabel("Coefficient b:", JLabel.TRAILING);
         p.add(coefficientLabel);
         coefficientLabel.setLabelFor(coefficientText);
         coefficientText.setToolTipText("This coefficient will represent the angular c. " +
@@ -193,6 +206,10 @@ public class AdvancedSettingsWindow extends JFrame {
 
     public JTextField getNumberOfSetsText() {
         return numberOfSetsText;
+    }
+
+    public JTextField getCoefficientText() {
+        return coefficientText;
     }
 
     public void setBiasTextFields (int index, String value) {

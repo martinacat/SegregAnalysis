@@ -11,6 +11,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
+import uk.ac.man.cs.segreganalysis.models.Flags;
 import uk.ac.man.cs.segreganalysis.models.HenryModel;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
@@ -150,7 +151,51 @@ public class SimulationController implements ActionListener{
         YulesQIndex yulesQIndex = new YulesQIndex(graph);
 
         // iterative model
-        HenryModel henryModel = new HenryModel(graph, view);
+        // initial aversion bias
+
+        double aversionBias = 0;
+        if (view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
+            aversionBias =
+                    Double.parseDouble(this.view.aversionBiasAdvancedSettings
+                            .getInitialBiasForAllText().getText());
+        }
+
+        // coefficient
+        double coefficient =
+                Double.parseDouble(this.view.aversionBiasAdvancedSettings.getCoefficientText().getText());
+        HenryModel henryModel = new HenryModel(graph, aversionBias, coefficient);
+
+        // direction
+        Flags.Direction direction = Flags.Direction.NONE;
+        Flags.Function function = Flags.Function.NONE;
+
+        String growthOrDecay = (String) this.view.aversionBiasAdvancedSettings
+                .getBiasEvolutionInTimeDropdown().getSelectedItem();
+        String functionFromDropdown = (String) this.view.aversionBiasAdvancedSettings
+                .getBiasEvolutionFunctionDropdown().getSelectedItem();
+
+        SegregAnalysis.logger.info("Bias evolution in time: " + growthOrDecay);
+
+        if (functionFromDropdown.equals("None")) {
+            // don't care about direction if function is none
+            direction = Flags.Direction.NONE;
+            function =  Flags.Function.NONE;
+        } else {
+
+            if (growthOrDecay.equals("Decay")) {
+                direction = Flags.Direction.DECAY;
+            } else { // Growth
+                direction = Flags.Direction.GROWTH;
+            }
+
+            if (functionFromDropdown.equals("Linear")) {
+                function = Flags.Function.LINEAR;
+            } else {
+                function = Flags.Function.CURVE;
+            }
+        }
+
+        Flags flags = new Flags(direction, function);
 
         // dataset for plotting graph jfree
         final XYSeriesCollection dataset = new XYSeriesCollection( );
@@ -169,7 +214,7 @@ public class SimulationController implements ActionListener{
                 yules.add(i, yulesQIndex.movingAverage());
             }
 
-            henryModel.iteration();
+            henryModel.iteration(i);
         }
 
         if (showDuncan) {
