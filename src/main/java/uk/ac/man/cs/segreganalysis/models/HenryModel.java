@@ -2,29 +2,20 @@ package uk.ac.man.cs.segreganalysis.models;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.view.View;
 
 /*  Based on the model broposed in
     A. D. Henry, P. Pralat, C. Zhang, "Emergence of segregation in evolving social networks"
  */
-public class HenryModel {
+public class HenryModel extends Model{
 
-    private Graph graph;
-
-    private View view;
-    private double aversionBias;
-
-    public HenryModel(Graph graph, View view){
-        this.graph = graph;
-        this.view = view;
-
-        if (view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
-            this.aversionBias =
-                    Double.parseDouble(this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().getText());
-        }
+    public HenryModel(Graph graph, double initialAversionBias, double coefficient){
+        super(graph, initialAversionBias, coefficient);
     }
 
-    public void iteration() {
+    @Override
+    public void iteration(int step) {
 
         // choose random edge uv
         Edge edge = getRandomEdge();
@@ -38,27 +29,16 @@ public class HenryModel {
             rewire(n0, n1);
         }
 
-
-    }
-
-    private void recalculateAversionBias() {
+        recalculateBias(step);
 
 
     }
 
-    private Edge getRandomEdge() {
-        int numberOfEdges = this.graph.getEdgeCount();
-        int randomEdge = (int)(Math.random()*100) % numberOfEdges;
-        return graph.getEdge(randomEdge);
-    }
 
-    private int getRandomNodeIndex() {
-        int numberOfNodes = this.graph.getNodeCount();
-        return (int)(Math.random()*100) % numberOfNodes;
-    }
 
 
     // rewires one of the two nodes given with a random node
+
     private void rewire(int n0, int n1) {
         int randomNode = getRandomNodeIndex();
 
@@ -90,21 +70,18 @@ public class HenryModel {
     }
 
     private boolean isToBeDeleted(Edge edge) {
-        // calculate attribute distance todo
-        // calculateAttributeDistance(edge);
-
-        return (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) ;
+        // todo gaussian distribution?
+        return (Math.random() <= probabilityOfDeletion(edge)) ;
     }
 
-    // todo
-    private double calculateAttributeDistance(Edge edge) {
-        double attributeDistance = 0;
-        if (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) {
-            attributeDistance = 1;
-        }
-        attributeDistance = attributeDistance * aversionBias;
-        return attributeDistance;
+    private double probabilityOfDeletion(Edge edge) {
+
+        double attributeDistance = calculateAttributeDistance(edge);
+        return attributeDistance * aversionBias;
+
     }
+
+
 
 
 }
