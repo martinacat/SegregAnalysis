@@ -4,6 +4,8 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
+import static uk.ac.man.cs.segreganalysis.controller.AttributesController.attributeTypes;
+
 public class YulesQIndex {
 
     private Graph graph;
@@ -27,6 +29,7 @@ public class YulesQIndex {
 
         graph = g;
 
+
     }
 
 
@@ -42,7 +45,8 @@ public class YulesQIndex {
 
         // count tied nodes
         for(Edge e : node.getEachEdge()) {
-            if (e.getOpposite(node).getAttribute("gender").equals(node.getAttribute("gender"))) {
+            if (e.getOpposite(node).getAttribute(attributeTypes.get(0))
+                    .equals(node.getAttribute(attributeTypes.get(0)))) {
                 a++;
             }
 
@@ -54,7 +58,8 @@ public class YulesQIndex {
         for (Node x : graph.getEachNode()) {
             if (!x.hasEdgeBetween(node) && x != node) { // if there is no tie between x and n
 
-                if (node.getAttribute("gender").equals(x.getAttribute("gender"))) {
+                if (node.getAttribute(attributeTypes.get(0))
+                        .equals(x.getAttribute(attributeTypes.get(0)))) {
                     c++;
                 }
                 else {

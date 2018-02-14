@@ -21,7 +21,7 @@ public class DuncanSegregationIndex {
         Iterator<Node> iter = graph.iterator();
         while (iter.hasNext()){
             Node n = iter.next();
-            if (n.getAttribute("gender").equals("male")) {
+            if (n.getAttribute("colour").equals("blue")) {
                 neg++;
             }else{
                 pos++;
@@ -29,7 +29,7 @@ public class DuncanSegregationIndex {
 
         }
 
-        SegregAnalysis.logger.info("total males: " + neg + ", total females: " + pos);
+        SegregAnalysis.logger.info("total blues: " + neg + ", total reds: " + pos);
 
     }
 
@@ -48,7 +48,7 @@ public class DuncanSegregationIndex {
 
             for (Edge e : edges) {
                 opposite = e.getOpposite(n);
-                if (opposite.getAttribute("gender").equals("male")) {
+                if (opposite.getAttribute("colour").equals("blue")) {
                     negNeighbours++;
 
                 }

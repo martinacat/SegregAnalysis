@@ -31,7 +31,7 @@ public class AversionBiasController implements ActionListener {
 
         if (event.getSource() == this.view.getAversionBiasAdvancedSettingsButton()) {
 
-            SegregAnalysis.logger.info("Aversion Bias Advanced settings Window opened");
+            SegregAnalysis.logger.info("Bias Advanced settings Window opened");
             view.aversionBiasAdvancedSettings.setVisible(true);
         }
 

@@ -2,36 +2,55 @@ package uk.ac.man.cs.segreganalysis.models;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 
 public abstract class Model {
     protected Graph graph;
 
-    protected double aversionBias;
+    protected double bias;
+    protected int initialXValue;
     private double coefficient;
 
-    public Model(Graph graph, double initialAversionBias, double coefficient){
+    public Model(Graph graph, double initialBias, double coefficient){
         this.graph = graph;
-        this.aversionBias = initialAversionBias;
+        this.bias = initialBias;
         this.coefficient = coefficient;
+        calculateBiasStartingXValue();
+
+        SegregAnalysis.logger.info("Initial bias: " + bias);
+        SegregAnalysis.logger.info("Bias starting x value: " + initialXValue);
+
     }
 
-    abstract void iteration(int step);
-    // calculate how aversion bias changes over time
-    // three modes exist:
-    // Fixed: no change
-    // Linear: Growth / Decay
-    // Curve: Growth / Decay
-    public void recalculateBias(int x) {
+    abstract public void iteration(int step);
+    abstract void rewire(Node n0, Node n1);
 
-        if (aversionBias < 1 && aversionBias > 0) {
+
+    private void calculateBiasStartingXValue() {
+        if (Flags.direction == Flags.Direction.DECAY) {
+            initialXValue = (int) (-Math.log(bias) / coefficient);
+        }
+        else if (Flags.direction == Flags.Direction.GROWTH) {
+
+        }
+        else {
+            initialXValue = 0;
+        }
+
+    }
+
+    public void recalculateBias(int timeStep) {
+
+        int x = timeStep + initialXValue;
+        if (bias < 1 && bias > 0) {
 
             if (Flags.direction == Flags.Direction.NONE)
                 return;
 
             if (Flags.direction == Flags.Direction.DECAY) {
                 if (Flags.function == Flags.Function.CURVE) {
-                    aversionBias = Math.pow(Math.E, (coefficient * (-x)));
+                    bias = Math.pow(Math.E, (coefficient * (-x)));
                 }
                 if (Flags.function == Flags.Function.LINEAR) {
                     // TODO
@@ -43,7 +62,7 @@ public abstract class Model {
                 SegregAnalysis.logger.info(Flags.direction);
 
                 if (Flags.function == Flags.Function.CURVE) {
-                    aversionBias = 1 - Math.exp(coefficient * (-x));
+                    bias = 1 - Math.exp(coefficient * (-x));
                 }
                 if (Flags.function == Flags.Function.LINEAR) {
                     // TODO
@@ -64,11 +83,25 @@ public abstract class Model {
         return (int)(Math.random()*100) % numberOfNodes;
     }
 
+    protected Node getRandomNode() {
+        int numberOfNodes = this.graph.getNodeCount();
+        int index =  (int)(Math.random()*100) % numberOfNodes;
+        return graph.getNode(index);
+    }
+
+
     protected double calculateAttributeDistance(Edge edge) {
-        if (!edge.getNode1().getAttribute("gender").equals(edge.getNode0().getAttribute("gender"))) {
-            return 1;
+        if (edge.getNode1().getAttribute("colour").equals(edge.getNode0().getAttribute("colour"))) {
+            return 0;
         }
-        return 0;
+        return 1;
+    }
+
+    protected double calculateAttributeDistance(Node n1, Node n2) {
+        if (n1.getAttribute("colour").equals(n2.getAttribute("colour"))) {
+            return 0;
+        }
+        return 1;
     }
 
 

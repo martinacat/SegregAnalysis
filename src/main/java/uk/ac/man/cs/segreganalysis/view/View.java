@@ -40,7 +40,7 @@ public class View extends JFrame {
 
     private final JButton applyButton = new JButton("Start Simulation");
     private final JButton aversionBiasAdvancedSettingsButton =
-            new JButton("Aversion Bias Settings");
+            new JButton("Bias Settings");
     private JButton importButton;
 
     private JRadioButton fromFileRadioButton;
@@ -181,8 +181,6 @@ public class View extends JFrame {
         return panel;
     }
 
-
-
     /* Creates the panel where the user specifies
          * how to run the simulation
          */
@@ -230,7 +228,6 @@ public class View extends JFrame {
 
         return panel;
     }
-
 
     /* Creates the panel where the user specifies
                  * details concerned with the measurements
@@ -334,7 +331,6 @@ public class View extends JFrame {
     public JComboBox<String> getAlgorithmDropdown() {
         return algorithmDropdown;
     }
-
 
     public JComboBox<String> getGeneratorDropdown() {
         return generatorDropdown;

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HenryModelTest {
+class AversionModelTest {
 
 
     @Test
@@ -13,7 +13,7 @@ class HenryModelTest {
 
     @Test
     void recalculateAversionBias() {
-        //HenryModel model = new HenryModel()
+        //AversionModel model = new AversionModel()
 
 
     }

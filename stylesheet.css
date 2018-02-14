@@ -6,10 +6,14 @@ node {
 	stroke-width: 1px;
 }
 
-node.male {
+node.blue {
 	fill-color: blue;
 }
 
-node.female {
+node.red {
 	fill-color: red;
+}
+
+node.orange {
+	fill-color: orange;
 }

@@ -11,8 +11,10 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
+import uk.ac.man.cs.segreganalysis.models.AffinityModel;
 import uk.ac.man.cs.segreganalysis.models.Flags;
-import uk.ac.man.cs.segreganalysis.models.HenryModel;
+import uk.ac.man.cs.segreganalysis.models.AversionModel;
+import uk.ac.man.cs.segreganalysis.models.Model;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
 import uk.ac.man.cs.segreganalysis.view.View;
@@ -35,6 +37,7 @@ public class SimulationController implements ActionListener{
 
         view = v;
         view.getApplyButton().addActionListener(this);
+        AttributesController attributesController = new AttributesController(view);
         FileBrowserController fileBrowserController = new FileBrowserController(view);
         AversionBiasController aversionBiasController = new AversionBiasController(view);
 
@@ -42,16 +45,16 @@ public class SimulationController implements ActionListener{
 
         // Action Listeners for dynamic view
 
-        view.getAlgorithmDropdown().addActionListener((ActionEvent e) -> {
-                    if (view.getAlgorithmDropdown().getSelectedItem() != "Dissimilarity") {
-                        view.getAversionBiasAdvancedSettingsButton().setVisible(false);
-                    }
-                    else {
-                        view.getAversionBiasAdvancedSettingsButton().setVisible(true);
-                    }
-                    view.getAversionBiasAdvancedSettingsButton().revalidate();
-                }
-        );
+//        view.getAlgorithmDropdown().addActionListener((ActionEvent e) -> {
+//                    if (view.getAlgorithmDropdown().getSelectedItem() == "Both") {
+//                        view.getAversionBiasAdvancedSettingsButton().setVisible(false);
+//                    }
+//                    else {
+//                        view.getAversionBiasAdvancedSettingsButton().setVisible(true);
+//                    }
+//                    view.getAversionBiasAdvancedSettingsButton().revalidate();
+//                }
+//        );
 
         // max link per step
         view.getGeneratorDropdown().addActionListener(e -> {
@@ -163,7 +166,18 @@ public class SimulationController implements ActionListener{
         // coefficient
         double coefficient =
                 Double.parseDouble(this.view.aversionBiasAdvancedSettings.getCoefficientText().getText());
-        HenryModel henryModel = new HenryModel(graph, aversionBias, coefficient);
+
+        // instantiate model
+
+
+        Model model;
+        if (view.getAlgorithmDropdown().getSelectedItem() == "Dissimilarity") {
+            model = new AversionModel(graph, aversionBias, coefficient);
+        }
+        else {
+            model = new AffinityModel(graph, aversionBias, coefficient);
+        }
+
 
         // direction
         Flags.Direction direction = Flags.Direction.NONE;
@@ -214,7 +228,7 @@ public class SimulationController implements ActionListener{
                 yules.add(i, yulesQIndex.movingAverage());
             }
 
-            henryModel.iteration(i);
+            model.iteration(i);
         }
 
         if (showDuncan) {
