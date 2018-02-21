@@ -147,7 +147,7 @@ public class View extends JFrame {
 
         JLabel graphSizeLabel = new JLabel("Graph size: ");
         graphSizeLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        sizeText = new JTextField("150");
+        sizeText = new JTextField("90");
         getSizeText().setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
         optionsPanel.add(graphSizeLabel);
         optionsPanel.add(getSizeText());

@@ -1,9 +1,10 @@
 node {
 	fill-color: grey;
-	size: 10px;
-	stroke-mode: plain;
-	stroke-color: black;
-	stroke-width: 1px;
+	size: 7px;
+}
+
+edge {
+    size: 0.5px;
 }
 
 node.blue {
@@ -16,4 +17,9 @@ node.red {
 
 node.orange {
 	fill-color: orange;
+}
+
+node.important {
+	fill-color: red;
+	size: 10px;
 }

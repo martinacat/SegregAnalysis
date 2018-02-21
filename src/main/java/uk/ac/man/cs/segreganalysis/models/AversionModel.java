@@ -24,6 +24,7 @@ public class AversionModel extends Model{
 
             Node n0 = edge.getNode0();
             Node n1 = edge.getNode1();
+
             graph.removeEdge(edge);
             rewire(n0, n1);
         }
@@ -47,12 +48,6 @@ public class AversionModel extends Model{
             }
             graph.addEdge(n0.getId() + "_" + randomNode.getId(), n0, randomNode);
 
-            if (!n0.getAttribute("colour").equals(randomNode.getAttribute("colour"))){
-                graph.getEdge(n0.getId() + "_" + randomNode.getId()).changeAttribute("layout.weight", 3);
-            }else {
-                graph.getEdge(n0.getId() + "_" + randomNode.getId()).changeAttribute("layout.weight", 0.5);
-
-            }
         }
         else { // rewire n1
             while (randomNode.hasEdgeBetween(n1)) {
@@ -60,12 +55,6 @@ public class AversionModel extends Model{
             }
             graph.addEdge(n1 + "_" + randomNode, n1, randomNode);
 
-            if (!n1.getAttribute("colour").equals(randomNode.getAttribute("colour"))){
-                graph.getEdge(n1.getId() + "_" + randomNode.getId()).changeAttribute("layout.weight", 3);
-            }else {
-                graph.getEdge(n1.getId() + "_" + randomNode.getId()).changeAttribute("layout.weight", 0.5);
-
-            }
         }
 
     }

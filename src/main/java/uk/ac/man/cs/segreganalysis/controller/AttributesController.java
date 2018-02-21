@@ -30,7 +30,7 @@ public class AttributesController {
             }
             else {
                 n.addAttribute(attributeTypes.get(0), "red");
-                n.addAttribute("ui.class", "orange");
+                n.addAttribute("ui.class", "red");
             }
         }
     }

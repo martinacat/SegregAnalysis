@@ -16,9 +16,9 @@ public class SegregAnalysis {
     public static void main(String args[]) {
 
         View view = new View("SegregAnalysis");
-        SimulationController simulationController = new SimulationController(view);
+        new SimulationController(view);
+
+
         view.setVisible(true);
     }
-
-
 }

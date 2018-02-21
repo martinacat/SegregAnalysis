@@ -1,7 +1,11 @@
 package uk.ac.man.cs.segreganalysis.models;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class AffinityModel extends Model{
 
@@ -17,6 +21,15 @@ public class AffinityModel extends Model{
 
         // assess whether they will connect or not
         if (areToBeConnected(n1, n2)) {
+
+            // todo param
+
+            Iterable<Edge> edges = n1.getEachEdge();
+            Iterator<Edge> iter = edges.iterator();
+
+            while (iter.hasNext()) {
+
+            }
 
             // drop one random link if they connected
             graph.removeEdge(getRandomEdge());
