@@ -1,11 +1,15 @@
 package uk.ac.man.cs.segreganalysis.models;
 
+import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.GraphParseException;
 import org.graphstream.ui.graphicGraph.GraphPosLengthUtils;
+import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants;
 import org.graphstream.ui.layout.springbox.implementations.LinLog;
+import org.graphstream.ui.spriteManager.Sprite;
+import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.stream.ProxyPipe;
 
@@ -34,20 +38,29 @@ public class LinLogLayout {
 
     }
 
+    private ConnectedComponents cc;
+    private SpriteManager sm;
+    private Sprite ccCount;
+
     public void findCommunities(String fileName)
 
         throws IOException, GraphParseException {
 
         graph = new SingleGraph("communities");
-        //this.graph = graph;
         viewer = graph.display(false);
 
         // Create a back link from the viewer to our program to receive its interactions.
         fromViewer = viewer.newThreadProxyOnGraphicGraph();
 
-        layout = new LinLog(false);        // 2
-        layout.configure(a, r, true, force);    // 3
-        layout.addSink(graph);            // 4
+        layout = new LinLog(false);
+        cc = new ConnectedComponents(graph);
+        sm = new SpriteManager(graph);
+        ccCount = sm.addSprite("CC");
+        layout.configure(a, r, true, force);
+        cc.setCutAttribute("cut");
+        ccCount.setPosition(StyleConstants.Units.PX, 20, 20, 0);		// 2
+
+        layout.addSink(graph);
         graph.addSink(layout);
 
         //Connect this link to our graph so that it is modified by the viewer events.
@@ -60,13 +73,13 @@ public class LinLogLayout {
         // Connect the graph to the layout so that the layout receive each modification event on the graph.
         // Check if the user closed the viewer window to properly end the program.
 
-        // TODO Problem is here (LOOP)
-
         while(! graph.hasAttribute("ui.viewClosed")) {
             // Consult these events regularly to update the graph from the user interactions.
             fromViewer.pump();
             layout.compute();
             showCommunities();                // 3
+            ccCount.setAttribute("ui.label",		// 3
+                    String.format("Modules %d", cc.getConnectedComponentsCount()));
         }
     }
 
@@ -111,5 +124,6 @@ public class LinLogLayout {
     protected static String styleSheet =				// 1
             "node { size: 7px; fill-color: rgb(150,150,150); }" +
             "edge { fill-color: rgb(255,50,50); size: 2px; }" +
-            "edge.cut { fill-color: rgba(200,200,200,128); }";
+            "edge.cut { fill-color: rgba(200,200,200,128); }" +
+            "sprite#CC { size: 0px; text-color: rgb(150,100,100); text-size: 20; }";
 }

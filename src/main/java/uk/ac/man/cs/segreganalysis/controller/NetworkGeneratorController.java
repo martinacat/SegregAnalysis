@@ -52,6 +52,8 @@ public class NetworkGeneratorController {
             gen.nextEvents();
         gen.end();
 
+
+
         return graph;
 
     }

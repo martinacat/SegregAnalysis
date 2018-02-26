@@ -1,7 +1,5 @@
 package uk.ac.man.cs.segreganalysis.view;
 
-import uk.ac.man.cs.segreganalysis.controller.AversionBiasController;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -49,6 +47,7 @@ public class View extends JFrame {
 
     private final JCheckBox checkBoxSave = new JCheckBox("Save initial graph for comparison");
     private final JPanel saveAsPanel = new JPanel();
+    private JTextField attributesDistributionText;
 
 
     public View(String title){
@@ -262,9 +261,17 @@ public class View extends JFrame {
         return panel;
     }
 
+    public JTextField getNumberOfAttributes() {
+        return numberOfAttributes;
+    }
+
+    public JTextField getAttributesDistributionText() {
+        return attributesDistributionText;
+    }
+
     /* Creates the panel where the user specifies
-     * details concerned with the attributes
-     */
+         * details concerned with the attributes
+         */
     private JComponent makeAttributesPanel() {
 
         // First sub-panel: buttons
@@ -304,18 +311,15 @@ public class View extends JFrame {
 
         y_coordinate = 30;
 
-        JLabel numberofAttributesLabel = new JLabel("Number of attributes: ");
-        numberofAttributesLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        numberOfAttributes = new JTextField();
-        numberOfAttributes.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
-        optionsPanel.add(numberofAttributesLabel);
-        optionsPanel.add(numberOfAttributes);
 
-        y_coordinate += 30;
-
-        JLabel attributesDistributionLabel = new JLabel("Attributes distribution: ");
+        JLabel attributesDistributionLabel = new JLabel("Relative size of attribute sets: ");
         attributesDistributionLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
+        attributesDistributionText = new JTextField("1, 1, 1, 1");
+        attributesDistributionText.setToolTipText("If the number of attributes is 3 you will have " +
+                                                "\nto specify: size_set1, size_set2, size_set3 (e.g. 1, 1, 2)");
+        attributesDistributionText.setBounds(FIELD_X+20, y_coordinate, 120, HEIGHT);
         optionsPanel.add(attributesDistributionLabel);
+        optionsPanel.add(attributesDistributionText);
 
 
         // add everything to a container panel

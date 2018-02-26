@@ -15,11 +15,26 @@ node.red {
 	fill-color: red;
 }
 
-node.orange {
-	fill-color: orange;
+node.green {
+	fill-color: green;
 }
 
-node.important {
-	fill-color: red;
-	size: 10px;
+node.cyan {
+	fill-color: cyan;
+}
+
+node.yellow {
+	fill-color: yellow;
+}
+
+node.purple {
+	fill-color: purple;
+}
+
+node.aquamarine {
+	fill-color: aquamarine;
+}
+
+node.magenta {
+	fill-color: magenta;
 }

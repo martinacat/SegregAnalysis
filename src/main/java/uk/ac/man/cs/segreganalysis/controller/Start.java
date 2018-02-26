@@ -11,6 +11,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
+import org.w3c.dom.Attr;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.models.*;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
@@ -22,6 +23,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 public class Start implements ActionListener {
     private View view;
@@ -65,17 +67,13 @@ public class Start implements ActionListener {
                 }
                 @Override
                 public void done() {
-
+                    return;
                 }
             };
 
             worker.execute();
 
 
-        }
-
-        if (event.getSource() == view.getCheckBoxSave()) {
-            SegregAnalysis.logger.info("Save pressed");
         }
     }
 
@@ -119,7 +117,8 @@ public class Start implements ActionListener {
             graph = networkGeneratorController.generate(graph);
         }
 
-        AttributesController.initialiseAttributes(graph);
+        AttributesController attributesController = new AttributesController(view);
+        attributesController.initialiseAttributes(graph);
 
 
 
@@ -160,18 +159,28 @@ public class Start implements ActionListener {
                 Double.parseDouble(this.view.aversionBiasAdvancedSettings.getCoefficientText().getText());
 
         // instantiate model
-        Model model;
+        Model[] interleavingModels = new Model[2];
+
         if (view.getAlgorithmDropdown().getSelectedItem() == "Dissimilarity") {
-            model = new AversionModel(graph, aversionBias, coefficient);
+            SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
+            interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient);
+            interleavingModels[1] = new AversionModel(graph, aversionBias, coefficient);
+        }
+        else if (view.getAlgorithmDropdown().getSelectedItem() == "Affinity"){
+            SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
+            interleavingModels[0] = new AffinityModel(graph, aversionBias, coefficient);
+            interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient);
+
         }
         else {
-            model = new AffinityModel(graph, aversionBias, coefficient);
+            SegregAnalysis.logger.info("Interleaving Affinity and Dissimilarity models");
+            interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient);
+            interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient);
         }
 
-
-        // direction
-        Flags.Direction direction = Flags.Direction.NONE;
-        Flags.Function function = Flags.Function.NONE;
+        // Bias: direction and function
+        Flags.Direction direction;
+        Flags.Function function;
 
         String growthOrDecay = (String) this.view.aversionBiasAdvancedSettings
                 .getBiasEvolutionInTimeDropdown().getSelectedItem();
@@ -188,7 +197,7 @@ public class Start implements ActionListener {
 
             if (growthOrDecay.equals("Decay")) {
                 direction = Flags.Direction.DECAY;
-            } else { // Growth
+            } else {
                 direction = Flags.Direction.GROWTH;
             }
 
@@ -207,13 +216,9 @@ public class Start implements ActionListener {
         final XYSeries yules = new XYSeries( "Yule's Q" );
 
 
-
-
-
         // iterations of the algorithm
         for (int i = 0; i < steps; i++) {
-
-
+            
             if (showDuncan) {
                 duncan.add(i, DSIndex.calculate());
             }
@@ -222,7 +227,7 @@ public class Start implements ActionListener {
                 yules.add(i, yulesQIndex.movingAverage());
             }
 
-            model.iteration(i);
+            interleavingModels[i%2].iteration(i);
 
 
 
@@ -242,7 +247,7 @@ public class Start implements ActionListener {
 
         chart.pack( );
         RefineryUtilities.centerFrameOnScreen( chart );
-        //chart.setVisible( true );
+        chart.setVisible( true );
 
 
 
