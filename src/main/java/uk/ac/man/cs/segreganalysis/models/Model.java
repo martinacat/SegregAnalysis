@@ -32,7 +32,7 @@ public abstract class Model {
             initialXValue = (int) (-Math.log(bias) / coefficient);
         }
         else if (Flags.direction == Flags.Direction.GROWTH) {
-
+            initialXValue = (int) (Math.log(1-bias)/-coefficient);
         }
         else {
             initialXValue = 0;

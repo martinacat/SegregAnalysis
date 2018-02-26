@@ -37,9 +37,9 @@ public class XYChart extends JFrame {
         final XYPlot xyPlot = xylineChart.getXYPlot( );
 
         // make the bars static
-        NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-        range.setRange(-0.1, 1.00);
-        range.setTickUnit(new NumberTickUnit(0.1));
+//        NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
+//        range.setRange(-0.1, 1.00);
+//        range.setTickUnit(new NumberTickUnit(0.1));
 
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
         renderer.setBaseShapesVisible(false); // no data points
