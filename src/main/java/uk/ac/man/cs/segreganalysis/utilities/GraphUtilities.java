@@ -21,18 +21,18 @@ public class GraphUtilities {
 
     }
 
-    public static int displayLinLogLayout(String filename) {
-        try {
-            (new LinLogLayout()).findCommunities("/Users/martinacatizone/git/segreganalysis/"+filename);
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 1;
-        } catch (GraphParseException e) {
-            e.printStackTrace();
-            return 1;
-        }
-    }
+//    public static int displayLinLogLayout(String filename) {
+//        try {
+//            (new LinLogLayout()).findCommunities("/Users/martinacatizone/git/segreganalysis/"+filename);
+//            return 0;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return 1;
+//        } catch (GraphParseException e) {
+//            e.printStackTrace();
+//            return 1;
+//        }
+//    }
 
     public static int[] calculateApproximateSize(int total, int[] relativeSizes) {
 

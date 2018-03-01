@@ -17,6 +17,7 @@ import uk.ac.man.cs.segreganalysis.models.Model;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
 import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
+import uk.ac.man.cs.segreganalysis.view.LinLogLayout;
 import uk.ac.man.cs.segreganalysis.view.MainWindow;
 import uk.ac.man.cs.segreganalysis.view.XYChart;
 
@@ -48,16 +49,8 @@ public class Start implements ActionListener {
             start();
             GraphUtilities.saveGraph(graph, "final_graph.gml");
 
-            // All code inside SwingWorker runs on a seperate thread
-            SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>() {
-                @Override
-                public Integer doInBackground() {
-                    return (Integer) GraphUtilities.displayLinLogLayout("final_graph.gml");
-                }
-            };
-
-            worker.execute();
-
+            // display
+            new LinLogLayout("final_graph.gml");
 
         }
     }

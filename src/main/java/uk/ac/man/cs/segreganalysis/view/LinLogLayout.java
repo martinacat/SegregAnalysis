@@ -12,8 +12,10 @@ import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.stream.ProxyPipe;
+import scala.util.parsing.combinator.testing.Str;
+import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
 
-import java.io.File;
+import javax.swing.*;
 import java.io.IOException;
 
 
@@ -35,6 +37,17 @@ public class LinLogLayout {
     private ConnectedComponents cc;
     private SpriteManager sm;
     private Sprite ccCount;
+
+
+    public LinLogLayout (String filename) {
+        try {
+            findCommunities(filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GraphParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void findCommunities(String fileName)
 
@@ -65,17 +78,30 @@ public class LinLogLayout {
         graph.addAttribute("ui.stylesheet", styleSheet);
         graph.read(fileName);
 
-        // Connect the graph to the layout so that the layout receive each modification event on the graph.
-        // Check if the user closed the viewer window to properly end the program.
 
-        while(! graph.hasAttribute("ui.viewClosed")) {
-            // Consult these events regularly to update the graph from the user interactions.
-            fromViewer.pump();
-            layout.compute();
-            showCommunities();                // 3
-            ccCount.setAttribute("ui.label",		// 3
-                    String.format("Modules %d", cc.getConnectedComponentsCount()));
-        }
+        // All code inside SwingWorker runs on a seperate thread
+        SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>() {
+            @Override
+            public Integer doInBackground() {
+
+                // Connect the graph to the layout so that the layout receive
+                // each modification event on the graph.
+                // Check if the user closed the viewer window to properly
+                // end the program.
+                while(! graph.hasAttribute("ui.viewClosed")) {
+                    // Consult these events regularly to update the graph from the user interactions.
+                    fromViewer.pump();
+                    layout.compute();
+                    showCommunities();                // 3
+                    ccCount.setAttribute("ui.label",		//
+                            String.format("Modules %d", cc.getConnectedComponentsCount()));
+                }
+                return 1;
+            }
+        };
+
+        worker.execute();
+
     }
 
     /*

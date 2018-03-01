@@ -3,6 +3,7 @@ package uk.ac.man.cs.segreganalysis.controller;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
+import uk.ac.man.cs.segreganalysis.view.LinLogLayout;
 import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 import javax.swing.*;
@@ -57,14 +58,9 @@ public class AttributesController {
         // save generated graph to a file
         GraphUtilities.saveGraph(graph, "initial_graph.gml");
 
-        SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>() {
-            @Override
-            public Integer doInBackground() {
-                return (Integer) GraphUtilities.displayLinLogLayout("initial_graph.gml");
-            }
-        };
+        // display
+        new LinLogLayout("initial_graph.gml");
 
-        worker.execute();
     }
 
     private int[] calculateActualSetSizes(int numberOfNodes) {
