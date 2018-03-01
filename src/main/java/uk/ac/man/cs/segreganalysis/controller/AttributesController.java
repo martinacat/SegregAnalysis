@@ -16,14 +16,12 @@ public class AttributesController {
     private String[] colours = {"red", "cyan", "green", "purple",
             "magenta", "orange", "yellow", "aquamarine", "blue"};
 
-    private MainWindow view;
     private int numberOfAttributes;
     private int[] attributesDistribution;
 
 
     public AttributesController(MainWindow view) {
 
-        this.view = view;
         String[] distrib = view.getAttributesDistributionText().getText().split(" ?, ?");
         this.numberOfAttributes = distrib.length;
         this.attributesDistribution = new int[numberOfAttributes];

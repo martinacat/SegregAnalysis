@@ -67,7 +67,6 @@ public abstract class Model {
             }
 
             if (Flags.direction == Flags.Direction.GROWTH) {
-                SegregAnalysis.logger.info(Flags.direction);
 
                 if (Flags.function == Flags.Function.CURVE) {
                     bias = 1 - Math.exp(coefficient * (-x));
