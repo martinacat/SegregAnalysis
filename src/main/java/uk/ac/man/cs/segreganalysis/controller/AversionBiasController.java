@@ -1,15 +1,10 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
-import org.apache.commons.lang3.StringUtils;
-import scala.annotation.meta.field;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.view.View;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class AversionBiasController implements ActionListener {
 
@@ -20,9 +15,9 @@ public class AversionBiasController implements ActionListener {
 
         this.view = view;
         this.view.getAversionBiasAdvancedSettingsButton().addActionListener(this);
-        this.view.aversionBiasAdvancedSettings.getDifferentForSetsRadioButton().addActionListener(this);
-        this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().addActionListener(this);
-        this.view.aversionBiasAdvancedSettings.getNumberOfSetsText()
+        this.view.biasAdvancedSettings.getDifferentForSetsRadioButton().addActionListener(this);
+        this.view.biasAdvancedSettings.getSameForAllRadioButton().addActionListener(this);
+        this.view.biasAdvancedSettings.getNumberOfSetsText()
                 .addFocusListener(new AversionBiasFocusAdapter(this.view));
 
     }
@@ -32,40 +27,41 @@ public class AversionBiasController implements ActionListener {
         if (event.getSource() == this.view.getAversionBiasAdvancedSettingsButton()) {
 
             SegregAnalysis.logger.info("Bias Advanced settings Window opened");
-            view.aversionBiasAdvancedSettings.setVisible(true);
+            view.biasAdvancedSettings.setVisible(true);
         }
 
-        if (event.getSource() == this.view.aversionBiasAdvancedSettings.getDifferentForSetsRadioButton()) {
-            if (!this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
-                this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().setEnabled(false);
+        // enable or disable text fields
+        if (event.getSource() == this.view.biasAdvancedSettings.getDifferentForSetsRadioButton()) {
+            if (!this.view.biasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
+                this.view.biasAdvancedSettings.getInitialBiasForAllText().setEnabled(false);
 
                 // enable "number of sets" textfield
-                this.view.aversionBiasAdvancedSettings.getNumberOfSetsText().setEnabled(true);
+                this.view.biasAdvancedSettings.getNumberOfSetsText().setEnabled(true);
 
                 // enable textfields for sets' unique aversion bias
                 for (int i = 0;
-                     i < this.view.aversionBiasAdvancedSettings.getBiasTextFields().length;
+                     i < this.view.biasAdvancedSettings.getBiasTextFields().length;
                      i++) {
-                    this.view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(true);
-                    this.view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(true);
+                    this.view.biasAdvancedSettings.getBiasTextFields()[i].setEnabled(true);
+                    this.view.biasAdvancedSettings.getSizeTextFields()[i].setEnabled(true);
 
                 }
             }
         }
 
-        if (event.getSource() == this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton()) {
-            if (this.view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
-                this.view.aversionBiasAdvancedSettings.getInitialBiasForAllText().setEnabled(true);
+        if (event.getSource() == this.view.biasAdvancedSettings.getSameForAllRadioButton()) {
+            if (this.view.biasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
+                this.view.biasAdvancedSettings.getInitialBiasForAllText().setEnabled(true);
 
                 // disable "number of sets" textfield
-                this.view.aversionBiasAdvancedSettings.getNumberOfSetsText().setEnabled(false);
+                this.view.biasAdvancedSettings.getNumberOfSetsText().setEnabled(false);
 
                 // disable textfields for sets' unique aversion bias
                 for (int i = 0;
-                     i < this.view.aversionBiasAdvancedSettings.getBiasTextFields().length;
+                     i < this.view.biasAdvancedSettings.getBiasTextFields().length;
                      i++) {
-                    this.view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(false);
-                    this.view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(false);
+                    this.view.biasAdvancedSettings.getBiasTextFields()[i].setEnabled(false);
+                    this.view.biasAdvancedSettings.getSizeTextFields()[i].setEnabled(false);
 
                 }
 

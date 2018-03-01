@@ -1,6 +1,8 @@
 package uk.ac.man.cs.segreganalysis.view;
 
 
+import uk.ac.man.cs.segreganalysis.utilities.SpringUtilities;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -13,7 +15,7 @@ public class AdvancedSettingsWindow extends JFrame {
 
     private JTextField coefficientText = new JTextField("1", 10);
 
-    private final JRadioButton differentForSetsRadioButton = new JRadioButton("Different aversion bias for sets of nodes");
+    private final JRadioButton differentForSetsRadioButton = new JRadioButton("Different bias for sets of nodes");
 
     private final JRadioButton sameForAllRadioButton = new JRadioButton("Same initial bias for all the nodes");
 
@@ -123,23 +125,6 @@ public class AdvancedSettingsWindow extends JFrame {
 
         container.add(q);
 
-//        JPanel numberOfSetsPanel = new JPanel(new SpringLayout());
-
-        // panel with the different aversion bias for sets of nodes
-//        JLabel numberOfSetsLabel = new JLabel("Number of sets:", JLabel.TRAILING);
-//        numberOfSetsPanel.add(numberOfSetsLabel);
-//        JTextField numberOfSetsText = new JTextField(10);
-//        numberOfSetsLabel.setLabelFor(numberOfSetsText);
-//        numberOfSetsPanel.add(numberOfSetsText);
-
-//        SpringUtilities.makeCompactGrid(numberOfSetsPanel,
-//                1, 2, //rows, cols
-//                6, 6,        //initX, initY
-//                6, 6);       //xPad, yPad
-//
-//        container.add(numberOfSetsPanel);
-
-
         JPanel setsPanel = new JPanel();
         setsPanel.setLayout(new SpringLayout());
         setsPanel.setMaximumSize(new Dimension(WIDTH, 150));
@@ -200,9 +185,6 @@ public class AdvancedSettingsWindow extends JFrame {
         return sizeTextFields;
     }
 
-    public JTextField[] getBiasTextFields() {
-        return biasTextFields;
-    }
 
     public JTextField getNumberOfSetsText() {
         return numberOfSetsText;
@@ -210,6 +192,10 @@ public class AdvancedSettingsWindow extends JFrame {
 
     public JTextField getCoefficientText() {
         return coefficientText;
+    }
+
+    public JTextField[] getBiasTextFields() {
+        return biasTextFields;
     }
 
     public void setBiasTextFields (int index, String value) {

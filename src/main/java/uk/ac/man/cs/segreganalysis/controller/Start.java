@@ -4,18 +4,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.GraphParseException;
-import org.graphstream.stream.file.FileSinkGML;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
-import org.w3c.dom.Attr;
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
-import uk.ac.man.cs.segreganalysis.models.*;
+import uk.ac.man.cs.segreganalysis.models.AffinityModel;
+import uk.ac.man.cs.segreganalysis.models.AversionModel;
+import uk.ac.man.cs.segreganalysis.models.Flags;
+import uk.ac.man.cs.segreganalysis.models.Model;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
+import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
 import uk.ac.man.cs.segreganalysis.view.View;
 import uk.ac.man.cs.segreganalysis.view.XYChart;
 
@@ -23,7 +24,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.Array;
 
 public class Start implements ActionListener {
     private View view;
@@ -45,29 +45,15 @@ public class Start implements ActionListener {
             graph.addAttribute("ui.quality");
             graph.addAttribute("ui.antialias");
 
+            getParametersFromView();
+            start();
+            GraphUtilities.saveGraph(graph, "final_graph.gml");
 
             // All code inside SwingWorker runs on a seperate thread
             SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>() {
                 @Override
                 public Integer doInBackground() {
-
-                    getParametersFromView();
-                    start();
-
-                    // save
-                    try {
-                        saveFinalGraph();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    //graph.display();
-                    return (Integer) displayLinLogLayout();
-
-                }
-                @Override
-                public void done() {
-                    return;
+                    return (Integer) GraphUtilities.displayLinLogLayout("final_graph.gml");
                 }
             };
 
@@ -86,13 +72,7 @@ public class Start implements ActionListener {
                 JOptionPane.showMessageDialog(view, "Please select a .dsg file");
 
             }
-//            else if (!view.getFileBrowseField().getText().endsWith("dgs") ||
-//                     !view.getFileBrowseField().getText().endsWith("gml")) {
-//                SegregAnalysis.logger.error("File selected is not the right format");
-//                JOptionPane.showMessageDialog(view, "File selected is not the right format," +
-//                        " please select a .dsg file or a .gml file");
-//
-//            }
+
             SegregAnalysis.logger.info("Reading network from file " + view.getFileBrowseField().getText());
             String filePath = view.getFileBrowseField().getText();
 
@@ -134,6 +114,11 @@ public class Start implements ActionListener {
 
     private void start() {
 
+        // Bias: direction and function
+        Flags.Direction direction;
+        Flags.Function function;
+        Flags.Algorithm algorithm;
+
         graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
 
         boolean showDuncan = view.getCheckBoxDSI().isSelected();
@@ -144,47 +129,47 @@ public class Start implements ActionListener {
         DuncanSegregationIndex DSIndex = new DuncanSegregationIndex(graph);
         YulesQIndex yulesQIndex = new YulesQIndex(graph);
 
-        // iterative model
         // initial aversion bias
-
         double aversionBias = 0;
-        if (view.aversionBiasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
+        if (view.biasAdvancedSettings.getSameForAllRadioButton().isSelected()) {
             aversionBias =
-                    Double.parseDouble(this.view.aversionBiasAdvancedSettings
+                    Double.parseDouble(this.view.biasAdvancedSettings
                             .getInitialBiasForAllText().getText());
         }
 
         // coefficient
         double coefficient =
-                Double.parseDouble(this.view.aversionBiasAdvancedSettings.getCoefficientText().getText());
+                Double.parseDouble(this.view.biasAdvancedSettings.getCoefficientText().getText());
 
         // instantiate model
         Model[] interleavingModels = new Model[2];
 
         if (view.getAlgorithmDropdown().getSelectedItem() == "Dissimilarity") {
+            algorithm = Flags.Algorithm.DISSIMILARITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
-            interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient);
-            interleavingModels[1] = new AversionModel(graph, aversionBias, coefficient);
+            Model aversionModel = new AversionModel(graph, aversionBias, coefficient);
+            interleavingModels[0] = aversionModel;
+            interleavingModels[1] = aversionModel;
         }
         else if (view.getAlgorithmDropdown().getSelectedItem() == "Affinity"){
+            algorithm = Flags.Algorithm.AFFINITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
-            interleavingModels[0] = new AffinityModel(graph, aversionBias, coefficient);
-            interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient);
-
+            Model affinityModel = new AffinityModel(graph, aversionBias, coefficient);
+            interleavingModels[0] = affinityModel;
+            interleavingModels[1] = affinityModel;
         }
         else {
+            algorithm = Flags.Algorithm.BOTH;
             SegregAnalysis.logger.info("Interleaving Affinity and Dissimilarity models");
             interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient);
             interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient);
         }
 
-        // Bias: direction and function
-        Flags.Direction direction;
-        Flags.Function function;
 
-        String growthOrDecay = (String) this.view.aversionBiasAdvancedSettings
+
+        String growthOrDecay = (String) this.view.biasAdvancedSettings
                 .getBiasEvolutionInTimeDropdown().getSelectedItem();
-        String functionFromDropdown = (String) this.view.aversionBiasAdvancedSettings
+        String functionFromDropdown = (String) this.view.biasAdvancedSettings
                 .getBiasEvolutionFunctionDropdown().getSelectedItem();
 
         SegregAnalysis.logger.info("Bias evolution in time: " + growthOrDecay);
@@ -208,17 +193,30 @@ public class Start implements ActionListener {
             }
         }
 
-        Flags flags = new Flags(direction, function);
+        Flags flags = new Flags(direction, function, algorithm);
 
         // dataset for plotting graph jfree
         final XYSeriesCollection dataset = new XYSeriesCollection( );
         final XYSeries duncan = new XYSeries( "DSI" );
         final XYSeries yules = new XYSeries( "Yule's Q" );
 
+        // plot bias
+        final XYSeries biasPlot = new XYSeries("Bias");
+        if (algorithm == Flags.Algorithm.DISSIMILARITY) {
+            biasPlot.setDescription("Aversion bias");
+        }
+        else if (algorithm == Flags.Algorithm.AFFINITY) {
+            biasPlot.setDescription("Attachment bias" );
+        }
+        else if (algorithm == Flags.Algorithm.BOTH) {
+            biasPlot.setDescription("Aversion/Attachment bias" );
+        }
+
 
         // iterations of the algorithm
         for (int i = 0; i < steps; i++) {
-            
+
+            biasPlot.add(i, interleavingModels[i%2].getBias());
             if (showDuncan) {
                 duncan.add(i, DSIndex.calculate());
             }
@@ -229,18 +227,13 @@ public class Start implements ActionListener {
 
             interleavingModels[i%2].iteration(i);
 
-
-
         }
 
 
-        if (showDuncan) {
-            dataset.addSeries(duncan);
-        }
+        if (showDuncan) { dataset.addSeries(duncan); }
+        if (showYulesQ) { dataset.addSeries(yules); }
 
-        if (showYulesQ) {
-            dataset.addSeries(yules);
-        }
+        dataset.addSeries(biasPlot);
 
         XYChart chart = new XYChart("Segregation Emergence Statistics",
                 "", dataset);
@@ -249,28 +242,7 @@ public class Start implements ActionListener {
         RefineryUtilities.centerFrameOnScreen( chart );
         chart.setVisible( true );
 
-
-
-
-
     }
 
-    private void saveFinalGraph() throws IOException {
-        String filePath = "graph.gml";
-        FileSinkGML fs = new FileSinkGML();
-        fs.writeAll(graph, filePath);
-    }
 
-    private int displayLinLogLayout() {
-        try {
-            (new LinLogLayout()).findCommunities("/Users/martinacatizone/git/segreganalysis/graph.gml");
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 1;
-        } catch (GraphParseException e) {
-            e.printStackTrace();
-            return 1;
-        }
-    }
 }

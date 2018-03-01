@@ -2,8 +2,7 @@ package uk.ac.man.cs.segreganalysis.controller;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import scala.util.parsing.combinator.testing.Str;
-import uk.ac.man.cs.segreganalysis.utilities.RelativeSizeSplitter;
+import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
 import uk.ac.man.cs.segreganalysis.view.View;
 
 import javax.swing.*;
@@ -55,10 +54,22 @@ public class AttributesController {
                 }
             }
         }
+
+        // save generated graph to a file
+        GraphUtilities.saveGraph(graph, "initial_graph.gml");
+
+        SwingWorker<Integer, Void> worker = new SwingWorker<Integer, Void>() {
+            @Override
+            public Integer doInBackground() {
+                return (Integer) GraphUtilities.displayLinLogLayout("initial_graph.gml");
+            }
+        };
+
+        worker.execute();
     }
 
     private int[] calculateActualSetSizes(int numberOfNodes) {
 
-        return RelativeSizeSplitter.calculateApproximateSize(numberOfNodes, attributesDistribution);
+        return GraphUtilities.calculateApproximateSize(numberOfNodes, attributesDistribution);
     }
 }

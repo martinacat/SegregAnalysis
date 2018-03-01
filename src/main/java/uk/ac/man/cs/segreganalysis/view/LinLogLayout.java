@@ -1,4 +1,4 @@
-package uk.ac.man.cs.segreganalysis.models;
+package uk.ac.man.cs.segreganalysis.view;
 
 import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.graph.Edge;
@@ -32,12 +32,6 @@ public class LinLogLayout {
     private Graph graph;
     private Viewer viewer;
 
-    public static void main(String args[]) throws IOException, GraphParseException {
-        (new LinLogLayout()).findCommunities("/Users/martinacatizone/git/segreganalysis/graph.gml");
-
-
-    }
-
     private ConnectedComponents cc;
     private SpriteManager sm;
     private Sprite ccCount;
@@ -48,6 +42,7 @@ public class LinLogLayout {
 
         graph = new SingleGraph("communities");
         viewer = graph.display(false);
+        viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 
         // Create a back link from the viewer to our program to receive its interactions.
         fromViewer = viewer.newThreadProxyOnGraphicGraph();

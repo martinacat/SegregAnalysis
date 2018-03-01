@@ -1,7 +1,10 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.graphstream.algorithm.generator.*;
+import org.graphstream.algorithm.generator.BarabasiAlbertGenerator;
+import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
 import uk.ac.man.cs.segreganalysis.view.View;
 
@@ -51,8 +54,6 @@ public class NetworkGeneratorController {
         for (int i = 0; i < numberOfNodes; i++)
             gen.nextEvents();
         gen.end();
-
-
 
         return graph;
 

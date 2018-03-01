@@ -15,24 +15,25 @@ public class View extends JFrame {
 
     private static final int HEIGHT = 20;
 
-    public final AdvancedSettingsWindow aversionBiasAdvancedSettings =
-            new AdvancedSettingsWindow("Aversion Bias");
+    public final AdvancedSettingsWindow biasAdvancedSettings =
+            new AdvancedSettingsWindow("Bias Advanced Settings");
 
 
     private static int y_coordinate;
 
     private JComboBox<String> algorithmDropdown; // choose algorithm
     private JComboBox<String> generatorDropdown;
-    private JCheckBox checkBoxYules = new JCheckBox("Yule's Q");
-    private JCheckBox checkBoxDSI = new JCheckBox("DSI (Duncan Segregation Index)");
+
+    // measurement window
+    private final JCheckBox checkBoxYules = new JCheckBox("Yule's Q");
+    private final JCheckBox checkBoxDSI = new JCheckBox("DSI (Duncan Segregation Index)");
+    private final JCheckBox checkBoxSave = new JCheckBox("Save graph stats");
 
 
     private JTextField fileBrowseField;
     private JTextField sizeText;
     private JTextField stepsText;
-    private JTextField aversionText;
     private JTextField maxLinksPerStepText;
-    private JTextField numberOfAttributes;
 
     private JLabel maxLinksPerStepLabel;
 
@@ -45,8 +46,6 @@ public class View extends JFrame {
 
 
 
-    private final JCheckBox checkBoxSave = new JCheckBox("Save initial graph for comparison");
-    private final JPanel saveAsPanel = new JPanel();
     private JTextField attributesDistributionText;
 
 
@@ -96,10 +95,9 @@ public class View extends JFrame {
 
     }
 
-
     /* Creates the panel where the user specifies how the initial
-         * graph is generated
-         */
+     * graph is generated
+     */
     private JComponent makeGraphGenerationPanel() {
 
         // First sub-panel: buttons
@@ -181,8 +179,8 @@ public class View extends JFrame {
     }
 
     /* Creates the panel where the user specifies
-         * how to run the simulation
-         */
+     * how to run the simulation
+     */
     private JComponent makeSimulationPanel() {
 
         JPanel panel = new JPanel();
@@ -229,8 +227,8 @@ public class View extends JFrame {
     }
 
     /* Creates the panel where the user specifies
-                 * details concerned with the measurements
-                 */
+     * details concerned with the measurements
+     */
     private JComponent makeMeasurementsPanel() {
         JPanel panel = new JPanel(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -261,13 +259,6 @@ public class View extends JFrame {
         return panel;
     }
 
-    public JTextField getNumberOfAttributes() {
-        return numberOfAttributes;
-    }
-
-    public JTextField getAttributesDistributionText() {
-        return attributesDistributionText;
-    }
 
     /* Creates the panel where the user specifies
          * details concerned with the attributes
@@ -330,6 +321,10 @@ public class View extends JFrame {
         panel.add(optionsPanel);
 
         return panel;
+    }
+
+    public JTextField getAttributesDistributionText() {
+        return attributesDistributionText;
     }
 
     public JComboBox<String> getAlgorithmDropdown() {

@@ -1,12 +1,9 @@
 package uk.ac.man.cs.segreganalysis;
 
-import uk.ac.man.cs.segreganalysis.controller.SimulationController;
-import uk.ac.man.cs.segreganalysis.view.View;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.swing.*;
+import uk.ac.man.cs.segreganalysis.controller.SimulationController;
+import uk.ac.man.cs.segreganalysis.view.View;
 
 
 public class SegregAnalysis {

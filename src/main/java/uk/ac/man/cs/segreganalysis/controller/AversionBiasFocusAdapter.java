@@ -18,7 +18,7 @@ public class AversionBiasFocusAdapter extends FocusAdapter{
     public void focusLost(FocusEvent e) {
 
 
-        if (e.getSource() == this.view.aversionBiasAdvancedSettings.getNumberOfSetsText()) {
+        if (e.getSource() == this.view.biasAdvancedSettings.getNumberOfSetsText()) {
             adaptSetsOnView();
         }
 
@@ -28,44 +28,44 @@ public class AversionBiasFocusAdapter extends FocusAdapter{
 
         int numberOfSets = 0;
 
-        String text = this.view.aversionBiasAdvancedSettings.getNumberOfSetsText().getText();
+        String text = this.view.biasAdvancedSettings.getNumberOfSetsText().getText();
 
         if (StringUtils.isNumeric(text)) {
             numberOfSets =  Integer.parseInt(text);
         }
         else {
-            JOptionPane.showMessageDialog(view.aversionBiasAdvancedSettings,
+            JOptionPane.showMessageDialog(view.biasAdvancedSettings,
                     "Please insert a numeric value between 1 and 4 for \"Number of sets\"");
             return;
         }
 
         if (numberOfSets < 2) {
-            JOptionPane.showMessageDialog(view.aversionBiasAdvancedSettings,
+            JOptionPane.showMessageDialog(view.biasAdvancedSettings,
                     "\"Number of sets\" must be at least 2");
             return;
         }
 
         if (numberOfSets > 4) {
-            JOptionPane.showMessageDialog(view.aversionBiasAdvancedSettings,
+            JOptionPane.showMessageDialog(view.biasAdvancedSettings,
                     "\"Number of sets\" can't be more than 4");
             return;
         }
 
         // only set enabled the exact number of fields
         for (int i = 0; i < numberOfSets; i++) {
-            view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(true);
-            view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(true);
+            view.biasAdvancedSettings.getBiasTextFields()[i].setEnabled(true);
+            view.biasAdvancedSettings.getSizeTextFields()[i].setEnabled(true);
 
-            view.aversionBiasAdvancedSettings.setBiasTextFields(i, "1");
-            view.aversionBiasAdvancedSettings.setSizeTextFields(i, "1");
+            view.biasAdvancedSettings.setBiasTextFields(i, "1");
+            view.biasAdvancedSettings.setSizeTextFields(i, "1");
         }
 
         for (int i = numberOfSets; i < 4; i++) {
-            view.aversionBiasAdvancedSettings.getBiasTextFields()[i].setEnabled(false);
-            view.aversionBiasAdvancedSettings.getSizeTextFields()[i].setEnabled(false);
+            view.biasAdvancedSettings.getBiasTextFields()[i].setEnabled(false);
+            view.biasAdvancedSettings.getSizeTextFields()[i].setEnabled(false);
 
-            view.aversionBiasAdvancedSettings.setBiasTextFields(i, "0");
-            view.aversionBiasAdvancedSettings.setSizeTextFields(i, "0");
+            view.biasAdvancedSettings.setBiasTextFields(i, "0");
+            view.biasAdvancedSettings.setSizeTextFields(i, "0");
 
         }
 

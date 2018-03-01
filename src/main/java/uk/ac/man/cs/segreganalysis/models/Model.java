@@ -8,6 +8,10 @@ import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 public abstract class Model {
     protected Graph graph;
 
+    public double getBias() {
+        return bias;
+    }
+
     protected double bias;
     protected int initialXValue;
     private double coefficient;
@@ -43,7 +47,11 @@ public abstract class Model {
     public void recalculateBias(int timeStep) {
 
         int x = timeStep + initialXValue;
-        if (bias < 1 && bias > 0) {
+        if (bias <= 1 && bias >= 0) {
+
+            if (Flags.algorithm == Flags.Algorithm.BOTH) {
+                return;
+            }
 
             if (Flags.direction == Flags.Direction.NONE)
                 return;
