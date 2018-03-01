@@ -1,12 +1,9 @@
-node {
-	fill-color: grey;
-	size: 7px;
-}
 
-edge {
-    size: 0.5px;
-}
 
+node { size: 7px; fill-color: rgb(150,150,150); }
+edge { fill-color: rgb(255,50,50); size: 0.5px; }
+edge.cut { fill-color: rgba(200,200,200,128); }
+sprite#CC { size: 0px; text-color: rgb(150,100,100); text-size: 20; }
 
 
 node.blue {

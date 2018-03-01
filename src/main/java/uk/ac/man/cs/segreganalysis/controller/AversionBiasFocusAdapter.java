@@ -1,7 +1,7 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 import javax.swing.*;
 import java.awt.event.FocusAdapter;
@@ -9,9 +9,9 @@ import java.awt.event.FocusEvent;
 
 public class AversionBiasFocusAdapter extends FocusAdapter{
 
-    private View view;
+    private MainWindow view;
 
-    AversionBiasFocusAdapter(View view) {
+    AversionBiasFocusAdapter(MainWindow view) {
         this.view = view;
     }
 

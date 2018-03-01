@@ -1,6 +1,6 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class FileBrowserController  implements ActionListener {
-    private View view;
+    private MainWindow view;
 
-    FileBrowserController(View v) {
+    FileBrowserController(MainWindow v) {
         view = v;
 
         view.getImportButton().addActionListener(this);

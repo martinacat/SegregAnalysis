@@ -6,19 +6,19 @@ import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 import javax.swing.*;
 
 public class NetworkGeneratorController {
-    private View view;
+    private MainWindow view;
 
 
     public enum GeneratorType {
         GRID, PREFERENTIAL_ATTACHMENT, RANDOM, RANDOM_EUCLIDEAN
     }
 
-    public NetworkGeneratorController(View v) {
+    public NetworkGeneratorController(MainWindow v) {
         view = v;
     }
 

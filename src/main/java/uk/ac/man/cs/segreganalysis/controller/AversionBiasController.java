@@ -1,17 +1,17 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
 import uk.ac.man.cs.segreganalysis.SegregAnalysis;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AversionBiasController implements ActionListener {
 
-    private View view;
+    private MainWindow view;
     private AversionBiasFocusAdapter focusAdapter = new AversionBiasFocusAdapter(this.view);
 
-    AversionBiasController(View view) {
+    AversionBiasController(MainWindow view) {
 
         this.view = view;
         this.view.getAversionBiasAdvancedSettingsButton().addActionListener(this);

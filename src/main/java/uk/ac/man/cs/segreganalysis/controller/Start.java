@@ -17,7 +17,7 @@ import uk.ac.man.cs.segreganalysis.models.Model;
 import uk.ac.man.cs.segreganalysis.models.indices.DuncanSegregationIndex;
 import uk.ac.man.cs.segreganalysis.models.indices.YulesQIndex;
 import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 import uk.ac.man.cs.segreganalysis.view.XYChart;
 
 import javax.swing.*;
@@ -26,13 +26,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Start implements ActionListener {
-    private View view;
+    private MainWindow view;
     private Graph graph;
 
     // fields of the view
     private int steps = 0;
-    Start(View view, Graph graph) {
-        this.graph = graph;
+    Start(MainWindow view) {
         this.view = view;
 
     }

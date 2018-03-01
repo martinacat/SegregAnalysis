@@ -59,10 +59,10 @@ public class LinLogLayout {
         graph.addSink(layout);
 
         //Connect this link to our graph so that it is modified by the viewer events.
-        fromViewer.addSink(graph);				// 2
+        fromViewer.addSink(graph);
 
-        graph.addAttribute("ui.antialias");			// 2
-        graph.addAttribute("ui.stylesheet", styleSheet);	// 1
+        graph.addAttribute("ui.antialias");
+        graph.addAttribute("ui.stylesheet", styleSheet);
         graph.read(fileName);
 
         // Connect the graph to the layout so that the layout receive each modification event on the graph.
@@ -88,13 +88,13 @@ public class LinLogLayout {
         double averageDist = 0;
         double edgesDist[] = new double[nEdges];
 
-        for(int i=0; i<nEdges; i++) {					// 1
+        for(int i=0; i<nEdges; i++) {
             Edge edge = graph.getEdge(i);
-            edgesDist[i] = GraphPosLengthUtils.edgeLength(edge);	// 2
-            averageDist += edgesDist[i];				// 3
+            edgesDist[i] = GraphPosLengthUtils.edgeLength(edge);
+            averageDist += edgesDist[i];
         }
 
-        averageDist /= nEdges;						// 3
+        averageDist /= nEdges;
 
         /*
         Browse anew each edge in the same order.
@@ -116,9 +116,6 @@ public class LinLogLayout {
         }
     }
 
-    protected static String styleSheet =				// 1
-            "node { size: 7px; fill-color: rgb(150,150,150); }" +
-            "edge { fill-color: rgb(255,50,50); size: 2px; }" +
-            "edge.cut { fill-color: rgba(200,200,200,128); }" +
-            "sprite#CC { size: 0px; text-color: rgb(150,100,100); text-size: 20; }";
+    protected static String styleSheet = "url('./stylesheet.css')";
+
 }

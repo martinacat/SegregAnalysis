@@ -1,17 +1,14 @@
 package uk.ac.man.cs.segreganalysis.controller;
 
-import org.graphstream.graph.Graph;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 public class SimulationController {
-    private View view;
-    private Graph graph;
+    private MainWindow view;
 
-
-    public SimulationController(View v){
+    public SimulationController(MainWindow v){
 
         view = v;
-        view.getApplyButton().addActionListener(new Start(view, graph));
+        view.getApplyButton().addActionListener(new Start(view));
         AttributesController attributesController = new AttributesController(view);
         FileBrowserController fileBrowserController = new FileBrowserController(view);
         AversionBiasController aversionBiasController = new AversionBiasController(view);

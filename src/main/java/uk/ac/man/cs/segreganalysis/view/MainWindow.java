@@ -5,7 +5,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class View extends JFrame {
+public class MainWindow extends JFrame {
 
     private static final int LABEL_X = 40;
     private static final int FIELD_X = 240;
@@ -49,7 +49,7 @@ public class View extends JFrame {
     private JTextField attributesDistributionText;
 
 
-    public View(String title){
+    public MainWindow(String title){
 
         super(title);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

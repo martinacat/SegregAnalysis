@@ -13,7 +13,7 @@ public class AdvancedSettingsWindow extends JFrame {
 
     private JTextField initialBiasForAllText = new JTextField("1");
 
-    private JTextField coefficientText = new JTextField("1", 10);
+    private JTextField coefficientText = new JTextField("0.01", 10);
 
     private final JRadioButton differentForSetsRadioButton = new JRadioButton("Different bias for sets of nodes");
 

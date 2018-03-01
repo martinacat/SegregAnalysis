@@ -3,7 +3,7 @@ package uk.ac.man.cs.segreganalysis;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.man.cs.segreganalysis.controller.SimulationController;
-import uk.ac.man.cs.segreganalysis.view.View;
+import uk.ac.man.cs.segreganalysis.view.MainWindow;
 
 
 public class SegregAnalysis {
@@ -12,7 +12,7 @@ public class SegregAnalysis {
 
     public static void main(String args[]) {
 
-        View view = new View("SegregAnalysis");
+        MainWindow view = new MainWindow("SegregAnalysis");
         new SimulationController(view);
 
 
