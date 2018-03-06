@@ -9,8 +9,12 @@ import org.graphstream.graph.Node;
  */
 public class AversionModel extends Model{
 
-    public AversionModel(Graph graph, double initialAversionBias, double coefficient){
-        super(graph, initialAversionBias, coefficient);
+    public AversionModel(Graph graph, double initialAversionBias, double coefficient, int totalSteps){
+        super(graph, initialAversionBias, coefficient, totalSteps);
+    }
+
+    public AversionModel(Graph graph, int totalSteps, double startBias, double endBias){
+        super(graph, totalSteps, startBias, endBias);
     }
 
     @Override

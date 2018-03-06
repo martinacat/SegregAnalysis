@@ -13,12 +13,22 @@ public abstract class Model {
     }
 
     protected double bias;
+    protected double initialBias;
+
     protected int initialXValue;
+    private int totalSteps;
     private double coefficient;
 
-    public Model(Graph graph, double initialBias, double coefficient){
+    private double linearStartBias;
+    private double linearEndBias;
+
+
+    public Model(Graph graph, double initialBias, double coefficient, int totalSteps){
         this.graph = graph;
         this.bias = initialBias;
+        this.initialBias = initialBias;
+        this.totalSteps = totalSteps;
+
         this.coefficient = coefficient;
         calculateBiasStartingXValue();
 
@@ -27,20 +37,33 @@ public abstract class Model {
 
     }
 
+    // constructor with parameters for linear
+    public Model(Graph graph, int totalSteps, double startBias, double endBias){
+
+        this.graph = graph;
+        this.totalSteps = totalSteps;
+        this.linearStartBias = startBias;
+        this.linearEndBias = endBias;
+
+    }
+
     abstract public void iteration(int step);
     abstract void rewire(Node n0, Node n1);
 
 
     private void calculateBiasStartingXValue() {
-        if (Flags.direction == Flags.Direction.DECAY) {
-            initialXValue = (int) (-Math.log(bias) / coefficient);
+
+        if (Flags.function == Flags.Function.CURVE ) {
+
+            if (Flags.direction == Flags.Direction.DECAY) {
+                initialXValue = (int) (-Math.log(bias) / coefficient);
+            } else if (Flags.direction == Flags.Direction.GROWTH) {
+                initialXValue = (int) (Math.log(1 - bias) / -coefficient);
+            } else {
+                initialXValue = 0;
+            }
         }
-        else if (Flags.direction == Flags.Direction.GROWTH) {
-            initialXValue = (int) (Math.log(1-bias)/-coefficient);
-        }
-        else {
-            initialXValue = 0;
-        }
+
 
     }
 
@@ -53,28 +76,25 @@ public abstract class Model {
                 return;
             }
 
-            if (Flags.direction == Flags.Direction.NONE)
+            if (Flags.function == Flags.Function.LINEAR) {
+                bias = (timeStep/totalSteps)*(linearEndBias-linearStartBias)-linearStartBias;
                 return;
+            }
+
+            if (Flags.direction == Flags.Direction.NONE) {
+                return;
+            }
 
             if (Flags.direction == Flags.Direction.DECAY) {
                 if (Flags.function == Flags.Function.CURVE) {
                     bias = Math.pow(Math.E, (coefficient * (-x)));
                 }
-                if (Flags.function == Flags.Function.LINEAR) {
-                    // TODO
-                }
-
             }
 
             if (Flags.direction == Flags.Direction.GROWTH) {
-
                 if (Flags.function == Flags.Function.CURVE) {
                     bias = 1 - Math.exp(coefficient * (-x));
                 }
-                if (Flags.function == Flags.Function.LINEAR) {
-                    // TODO
-                }
-
             }
         }
     }

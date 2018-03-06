@@ -53,7 +53,9 @@ public class LinLogLayout {
 
         throws IOException, GraphParseException {
 
+
         graph = new SingleGraph("communities");
+
         viewer = graph.display(false);
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 
@@ -94,7 +96,7 @@ public class LinLogLayout {
                     layout.compute();
                     showCommunities();                // 3
                     ccCount.setAttribute("ui.label",		//
-                            String.format("Modules %d", cc.getConnectedComponentsCount()));
+                            String.format(fileName + " modules: %d", cc.getConnectedComponentsCount()));
                 }
                 return 1;
             }

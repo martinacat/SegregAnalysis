@@ -129,6 +129,10 @@ public class Start implements ActionListener {
                             .getInitialBiasForAllText().getText());
         }
 
+        // Linear mode arguments
+        double linearStartBias = Double.parseDouble(this.view.biasAdvancedSettings.getLinearStartBiasText().getText());
+        double linearEndBias = Double.parseDouble(this.view.biasAdvancedSettings.getLinearEndBiasText().getText());
+
         // coefficient
         double coefficient =
                 Double.parseDouble(this.view.biasAdvancedSettings.getCoefficientText().getText());
@@ -139,22 +143,45 @@ public class Start implements ActionListener {
         if (view.getAlgorithmDropdown().getSelectedItem() == "Dissimilarity") {
             algorithm = Flags.Algorithm.DISSIMILARITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
-            Model aversionModel = new AversionModel(graph, aversionBias, coefficient);
+
+            Model aversionModel;
+            if (Flags.function != Flags.Function.LINEAR)
+                aversionModel = new AversionModel(graph, aversionBias, coefficient, steps);
+            else
+                aversionModel = new AversionModel(graph, steps, linearStartBias, linearEndBias);
+
             interleavingModels[0] = aversionModel;
             interleavingModels[1] = aversionModel;
         }
         else if (view.getAlgorithmDropdown().getSelectedItem() == "Affinity"){
             algorithm = Flags.Algorithm.AFFINITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
-            Model affinityModel = new AffinityModel(graph, aversionBias, coefficient);
+
+            Model affinityModel;
+            if (Flags.function != Flags.Function.LINEAR)
+                affinityModel = new AffinityModel(graph, aversionBias, coefficient, steps);
+            else
+                affinityModel = new AffinityModel(graph, steps, linearStartBias, linearEndBias);
+
             interleavingModels[0] = affinityModel;
             interleavingModels[1] = affinityModel;
         }
         else {
             algorithm = Flags.Algorithm.BOTH;
             SegregAnalysis.logger.info("Interleaving Affinity and Dissimilarity models");
-            interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient);
-            interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient);
+
+            Model affinityModel;
+            Model aversionModel;
+            if (Flags.function != Flags.Function.LINEAR) {
+                affinityModel = new AffinityModel(graph, aversionBias, coefficient, steps);
+                aversionModel = new AversionModel(graph, aversionBias, coefficient, steps);
+            }
+            else {
+                affinityModel = new AffinityModel(graph, steps, linearStartBias, linearEndBias);
+                aversionModel = new AversionModel(graph, steps, linearStartBias, linearEndBias);
+            }
+            interleavingModels[0] = aversionModel;
+            interleavingModels[1] = affinityModel;
         }
 
 
@@ -170,20 +197,24 @@ public class Start implements ActionListener {
             // don't care about direction if function is none
             direction = Flags.Direction.NONE;
             function =  Flags.Function.NONE;
-        } else {
+        }
+        else if (functionFromDropdown.equals("Linear")) {
+            function = Flags.Function.LINEAR;
+            direction = Flags.Direction.NONE;
+
+
+        }
+        else { // curve
+
+            function = Flags.Function.CURVE;
 
             if (growthOrDecay.equals("Decay")) {
                 direction = Flags.Direction.DECAY;
             } else {
                 direction = Flags.Direction.GROWTH;
             }
-
-            if (functionFromDropdown.equals("Linear")) {
-                function = Flags.Function.LINEAR;
-            } else {
-                function = Flags.Function.CURVE;
-            }
         }
+
 
         Flags flags = new Flags(direction, function, algorithm);
 

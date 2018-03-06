@@ -9,7 +9,12 @@ import java.awt.*;
 
 public class AdvancedSettingsWindow extends JFrame {
 
-    private final int WIDTH = 300;
+    public static final int HEIGHT = 20;
+    private final int WIDTH = 350;
+    private static final int LABEL_X = 10;
+    private static final int FIELD_X = 280;
+
+    private int y_coordinate = 10;
 
     private JTextField initialBiasForAllText = new JTextField("1");
 
@@ -25,6 +30,15 @@ public class AdvancedSettingsWindow extends JFrame {
     private final JTextField numberOfSetsText = new JTextField("4",10);
     private JComboBox biasEvolutionInTimeDropdown;
     private JComboBox biasEvolutionFunctionDropdown;
+    private final JLabel coefficientLabel = new JLabel("Coefficient b:");
+    private final JLabel biasEvolutionLabel = new JLabel("Bias evolution in time:");
+    private final JPanel evolutionOptionsPanel = new JPanel(null);
+    private JPanel container;
+    private final JPanel distributionOptionsPanel = new JPanel();
+    private final JLabel linearStartBiasLabel = new JLabel("Bias Start value");
+    private final JLabel linearEndBiasLabel = new JLabel("Bias End value");
+    private final JTextField linearEndBiasText = new JTextField("1");
+    private final JTextField linearStartBiasText = new JTextField("0");
 
 
     public AdvancedSettingsWindow (String title) {
@@ -52,78 +66,29 @@ public class AdvancedSettingsWindow extends JFrame {
         return biasEvolutionFunctionDropdown;
     }
 
+    public JLabel getCoefficientLabel() {
+        return coefficientLabel;
+    }
+
+    public JLabel getBiasEvolutionLabel() {
+        return biasEvolutionLabel;
+    }
+
+    public JPanel getEvolutionOptionsPanel() {
+        return evolutionOptionsPanel;
+    }
+
+
+
+
     private void populateView(JPanel container) {
 
+        this.container = container;
 
-        // panel with generic options for bias
-
-        JPanel p = new JPanel(new SpringLayout());
-        p.setMaximumSize(new Dimension(WIDTH, 100));
-
-        JLabel biasEvolutionLabel = new JLabel("Bias evolution in time:", JLabel.TRAILING);
-        p.add(biasEvolutionLabel);
-        String[] biasEvolutionInTimeChoices = {"None", "Decay", "Growth"};
-        biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
-        biasEvolutionLabel.setLabelFor(biasEvolutionInTimeDropdown);
-        p.add(biasEvolutionInTimeDropdown);
-
-        JLabel biasFunctionLabel = new JLabel("Bias evolution function:", JLabel.TRAILING);
-        p.add(biasFunctionLabel);
-        String[] biasEvolutionFunctionChoices = {"None", "Linear", "Curve"};
-        biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
-        biasEvolutionFunctionDropdown.setToolTipText(
-                "<html>" +
-                        "<img src=" + getClass().getResource("/decay.png") + "/>Decay curve: e^-bx<br>" +
-                        "<img src=" + getClass().getResource("/growth.png") + "/>Growth curve: 1-exp(-bx)<br> " +
-                        "</html>");
-        biasFunctionLabel.setLabelFor(biasEvolutionFunctionDropdown);
-        p.add(biasEvolutionFunctionDropdown);
-
-        JLabel coefficientLabel = new JLabel("Coefficient b:", JLabel.TRAILING);
-        p.add(coefficientLabel);
-        coefficientLabel.setLabelFor(coefficientText);
-        coefficientText.setToolTipText("This coefficient will represent the angular c. " +
-                "when \"Linear mode\" is selected, and the exponential coefficient when \"Curve mode\" is selected");
-        p.add(coefficientText);
+        populateEvolutionOptionsPanel();
+        populateDistributionOptionsPanel();
 
 
-        // Lay out the panel p
-        SpringUtilities.makeCompactGrid(p,
-                3, 2, //rows, cols
-                6, 6,        //initX, initY
-                6, 6);       //xPad, yPad
-
-
-        container.add(p);
-
-
-        // panel with options for the distribution of the bias (in sets or same for all nodes)
-
-        JPanel q = new JPanel();
-        q.setLayout(new FlowLayout());
-        //q.setMaximumSize(new Dimension(450, 300));
-
-        sameForAllRadioButton.setSelected(true);
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(sameForAllRadioButton);
-        buttonGroup.add(differentForSetsRadioButton);
-
-
-        // layout
-
-        q.add(sameForAllRadioButton);
-        q.add(initialBiasForAllText);
-
-        q.add(differentForSetsRadioButton);
-
-        JLabel numberOfSetsLabel = new JLabel("Number of sets:", JLabel.TRAILING);
-        q.add(numberOfSetsLabel);
-        numberOfSetsLabel.setLabelFor(numberOfSetsText);
-        numberOfSetsText.setEnabled(false);
-        q.add(numberOfSetsText);
-
-        container.add(q);
 
         JPanel setsPanel = new JPanel();
         setsPanel.setLayout(new SpringLayout());
@@ -167,6 +132,137 @@ public class AdvancedSettingsWindow extends JFrame {
         container.add(setsPanel);
 
     }
+
+    private void populateEvolutionOptionsPanel() {
+
+
+    }
+
+    public JLabel getLinearStartBiasLabel() {
+        return linearStartBiasLabel;
+    }
+
+    public JLabel getLinearEndBiasLabel() {
+        return linearEndBiasLabel;
+    }
+
+    public JTextField getLinearEndBiasText() {
+        return linearEndBiasText;
+    }
+
+    public JTextField getLinearStartBiasText() {
+        return linearStartBiasText;
+    }
+
+    private void populateDistributionOptionsPanel() {
+
+
+        distributionOptionsPanel.setLayout(null);
+
+        // panel with generic options for bias
+
+
+        JLabel biasFunctionLabel = new JLabel("Evolution function:");
+        biasFunctionLabel.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        distributionOptionsPanel.add(biasFunctionLabel);
+        String[] biasEvolutionFunctionChoices = {"None", "Linear", "Curve"};
+        biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
+        biasEvolutionFunctionDropdown.setToolTipText(
+                "<html>" +
+                        "<img src=" + getClass().getResource("/decay.png") + "/>Decay curve: e^-bx<br>" +
+                        "<img src=" + getClass().getResource("/growth.png") + "/>Growth curve: 1-exp(-bx)<br> " +
+                        "</html>");
+        biasEvolutionFunctionDropdown.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
+
+        biasFunctionLabel.setLabelFor(biasEvolutionFunctionDropdown);
+        distributionOptionsPanel.add(biasEvolutionFunctionDropdown);
+
+        y_coordinate += 30;
+
+        // Starting Bias (linear mode)
+        linearStartBiasLabel.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        linearStartBiasLabel.setVisible(false);
+        linearStartBiasText.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
+        linearStartBiasText.setVisible(false);
+        distributionOptionsPanel.add(linearStartBiasLabel);
+        distributionOptionsPanel.add(linearStartBiasText);
+
+
+        // Same Y
+
+        biasEvolutionLabel.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        biasEvolutionLabel.setVisible(false);
+        distributionOptionsPanel.add(biasEvolutionLabel);
+        String[] biasEvolutionInTimeChoices = {"Decay", "Growth"};
+        biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
+        biasEvolutionInTimeDropdown.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
+        biasEvolutionInTimeDropdown.setVisible(false);
+        biasEvolutionLabel.setLabelFor(biasEvolutionInTimeDropdown);
+        distributionOptionsPanel.add(biasEvolutionInTimeDropdown);
+
+        y_coordinate += 30;
+
+        // End Bias (linear mode)
+        linearEndBiasLabel.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        linearEndBiasLabel.setVisible(false);
+        linearEndBiasText.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
+        linearEndBiasText.setVisible(false);
+        distributionOptionsPanel.add(linearEndBiasLabel);
+        distributionOptionsPanel.add(linearEndBiasText);
+
+
+        // Same Y
+
+        coefficientLabel.setVisible(false);
+        coefficientLabel.setBounds(10, y_coordinate, 250, HEIGHT);
+        coefficientText.setVisible(false);
+        coefficientText.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+        distributionOptionsPanel.add(coefficientLabel);
+        coefficientLabel.setLabelFor(coefficientText);
+        coefficientText.setToolTipText("The exponential coefficient when \"Curve mode\" is selected");
+        distributionOptionsPanel.add(coefficientText);
+
+        y_coordinate += 30;
+
+
+
+        // panel with options for the distribution of the bias (in sets or same for all nodes)
+
+
+
+        // create button group
+        sameForAllRadioButton.setSelected(true);
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(sameForAllRadioButton);
+        buttonGroup.add(differentForSetsRadioButton);
+
+
+        // layout
+
+        sameForAllRadioButton.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        initialBiasForAllText.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);;
+        distributionOptionsPanel.add(sameForAllRadioButton);
+        distributionOptionsPanel.add(initialBiasForAllText);
+
+        y_coordinate += 30;
+
+        differentForSetsRadioButton.setBounds(LABEL_X, y_coordinate, 250, HEIGHT);
+        distributionOptionsPanel.add(differentForSetsRadioButton);
+
+        y_coordinate += 30;
+
+        JLabel numberOfSetsLabel = new JLabel("Number of sets:", JLabel.TRAILING);
+        numberOfSetsLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
+        numberOfSetsText.setBounds(FIELD_X, y_coordinate, 50, HEIGHT);
+
+        distributionOptionsPanel.add(numberOfSetsLabel);
+        numberOfSetsLabel.setLabelFor(numberOfSetsText);
+        numberOfSetsText.setEnabled(false);
+        distributionOptionsPanel.add(numberOfSetsText);
+
+        container.add(distributionOptionsPanel);
+    }
+
 
 
     public JRadioButton getDifferentForSetsRadioButton() {
@@ -214,6 +310,16 @@ public class AdvancedSettingsWindow extends JFrame {
         if (index < 0) {return;}
 
         sizeTextFields[index].setText(value);
+    }
+
+    private void drawGrid(JPanel p) {
+        // Lay out the panel evolutionOptionsPanel
+        SpringUtilities.makeCompactGrid(p,
+                3, 2, //rows, cols
+                6, 6,        //initX, initY
+                6, 6);       //xPad, yPad
+
+        container.add(p);
     }
 
 }

@@ -8,8 +8,11 @@ import java.util.Iterator;
 
 public class AffinityModel extends Model{
 
-    public AffinityModel(Graph graph, double initialBias, double coefficient){
-        super(graph, initialBias, coefficient);
+    public AffinityModel(Graph graph, double initialBias, double coefficient, int totalSteps){
+        super(graph, initialBias, coefficient, totalSteps);
+    }
+    public AffinityModel(Graph graph, int totalSteps, double startBias, double endBias){
+        super(graph, totalSteps, startBias, endBias);
     }
 
     @Override
