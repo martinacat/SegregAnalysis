@@ -144,27 +144,30 @@ public class Start implements ActionListener {
             algorithm = Flags.Algorithm.DISSIMILARITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
 
-            Model aversionModel;
-            if (Flags.function != Flags.Function.LINEAR)
-                aversionModel = new AversionModel(graph, aversionBias, coefficient, steps);
-            else
-                aversionModel = new AversionModel(graph, steps, linearStartBias, linearEndBias);
+            if (Flags.function != Flags.Function.LINEAR) {
+                interleavingModels[0] = new AversionModel(graph, aversionBias, coefficient, steps);
+                interleavingModels[1] = new AversionModel(graph, aversionBias, coefficient, steps);
+            }
+            else {
+                interleavingModels[0] = new AversionModel(graph, steps, linearStartBias, linearEndBias);
+                interleavingModels[1] = new AversionModel(graph, steps, linearStartBias, linearEndBias);
+            }
 
-            interleavingModels[0] = aversionModel;
-            interleavingModels[1] = aversionModel;
         }
         else if (view.getAlgorithmDropdown().getSelectedItem() == "Affinity"){
             algorithm = Flags.Algorithm.AFFINITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
 
             Model affinityModel;
-            if (Flags.function != Flags.Function.LINEAR)
-                affinityModel = new AffinityModel(graph, aversionBias, coefficient, steps);
-            else
-                affinityModel = new AffinityModel(graph, steps, linearStartBias, linearEndBias);
+            if (Flags.function != Flags.Function.LINEAR) {
+                interleavingModels[0] = new AffinityModel(graph, aversionBias, coefficient, steps);
+                interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient, steps);
+            }
+            else {
+                interleavingModels[0] = new AffinityModel(graph, steps, linearStartBias, linearEndBias);
+                interleavingModels[1] = new AffinityModel(graph, steps, linearStartBias, linearEndBias);
+            }
 
-            interleavingModels[0] = affinityModel;
-            interleavingModels[1] = affinityModel;
         }
         else {
             algorithm = Flags.Algorithm.BOTH;

@@ -24,20 +24,20 @@ public class AffinityModel extends Model{
         // assess whether they will connect or not
         if (areToBeConnected(n1, n2)) {
 
-            // todo param
 
-            Iterable<Edge> edges = n1.getEachEdge();
-            Iterator<Edge> iter = edges.iterator();
+            // delete one of the edges of n1 at random
+            int degree = n1.getDegree();
 
-            while (iter.hasNext()) {
+//            if (degree != 0) {
+//                int random = (int) (Math.random() * 100) % degree;
+//                Edge e = n1.getEdge(random);
+//                graph.removeEdge(e);
+//            } else {
+//                graph.removeEdge(getRandomEdge());
+//            }
 
-            }
-
-            // drop one random link if they connected
             graph.removeEdge(getRandomEdge());
-
             rewire(n1, n2);
-
 
         }
 

@@ -236,11 +236,9 @@ public class MainWindow extends JFrame {
 
 
         checkBoxYules.setSelected(true);
-        checkBoxDSI.setSelected(true);
         checkBoxSave.setSelected(false);
 
         panel.add(checkBoxYules);
-        panel.add(checkBoxDSI);
         panel.add(checkBoxSave);
 
 
