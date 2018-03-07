@@ -40,6 +40,8 @@ public class AffinityModel extends Model{
 
         }
 
+        recalculateBias(step);
+
 
     }
 

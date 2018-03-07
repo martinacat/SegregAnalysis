@@ -33,7 +33,7 @@ public class AversionModel extends Model{
             rewire(n0, n1);
         }
 
-        //recalculateBias(step);
+        recalculateBias(step);
 
 
     }

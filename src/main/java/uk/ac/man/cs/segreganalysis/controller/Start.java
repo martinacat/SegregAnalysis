@@ -42,7 +42,7 @@ public class Start implements ActionListener {
         if (event.getSource() == view.getApplyButton()) {
 
             graph = new SingleGraph("Network");
-            graph.addAttribute("ui.quality");
+            //graph.addAttribute("ui.quality");
             graph.addAttribute("ui.antialias");
 
             getParametersFromView();
