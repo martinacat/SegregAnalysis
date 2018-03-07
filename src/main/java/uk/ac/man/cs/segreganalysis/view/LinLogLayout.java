@@ -10,6 +10,8 @@ import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants;
 import org.graphstream.ui.layout.springbox.implementations.LinLog;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
+import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.stream.ProxyPipe;
 import scala.util.parsing.combinator.testing.Str;
@@ -58,6 +60,7 @@ public class LinLogLayout {
 
         viewer = graph.display(false);
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+
 
         // Create a back link from the viewer to our program to receive its interactions.
         fromViewer = viewer.newThreadProxyOnGraphicGraph();

@@ -28,9 +28,6 @@ public class DuncanSegregationIndex {
             }
 
         }
-
-        SegregAnalysis.logger.info("total blues: " + neg + ", total reds: " + pos);
-
     }
 
     public float calculate() {

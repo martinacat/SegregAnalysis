@@ -28,15 +28,14 @@ public class AffinityModel extends Model{
             // delete one of the edges of n1 at random
             int degree = n1.getDegree();
 
-//            if (degree != 0) {
-//                int random = (int) (Math.random() * 100) % degree;
-//                Edge e = n1.getEdge(random);
-//                graph.removeEdge(e);
-//            } else {
-//                graph.removeEdge(getRandomEdge());
-//            }
+            if (degree != 0) {
+                int random = (int) (Math.random() * 100) % degree;
+                Edge e = n1.getEdge(random);
+                graph.removeEdge(e);
+            } else {
+                graph.removeEdge(getRandomEdge());
+            }
 
-            graph.removeEdge(getRandomEdge());
             rewire(n1, n2);
 
         }
@@ -47,11 +46,8 @@ public class AffinityModel extends Model{
     @Override
     void rewire(Node n1, Node n2) {
 
-        if (n1.hasEdgeBetween(n2)) {
-            // the nodes are already connected
-            return;
-        }
-        else {
+        // connect if the nodes are not already connected
+        if (!n1.hasEdgeBetween(n2)) {
             graph.addEdge(n1.getId() + "_" + n2.getId(), n1, n2);
         }
 
@@ -59,7 +55,7 @@ public class AffinityModel extends Model{
     }
 
     private boolean areToBeConnected(Node n1, Node n2) {
-        return (Math.random() <= probabilityOfConnection(n1, n2));
+        return (Math.random() >= probabilityOfConnection(n1, n2));
     }
 
 

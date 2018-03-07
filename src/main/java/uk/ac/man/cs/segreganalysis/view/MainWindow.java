@@ -234,25 +234,11 @@ public class MainWindow extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 
-
         checkBoxYules.setSelected(true);
         checkBoxSave.setSelected(false);
 
         panel.add(checkBoxYules);
         panel.add(checkBoxSave);
-
-
-        // Second sub-Panel: Attributes Generation options
-        JPanel saveAsPanel = new JPanel();
-        saveAsPanel.setLayout(null);
-        saveAsPanel.setMaximumSize(new Dimension(1000, 50));
-
-        TitledBorder title = BorderFactory.createTitledBorder("Save As...");
-        title.setTitleJustification(TitledBorder.CENTER);
-        saveAsPanel.setBorder(title);
-
-
-        panel.add(saveAsPanel);
 
         return panel;
     }
@@ -303,9 +289,9 @@ public class MainWindow extends JFrame {
 
         JLabel attributesDistributionLabel = new JLabel("Relative size of attribute sets: ");
         attributesDistributionLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        attributesDistributionText = new JTextField("1, 1, 1, 1");
+        attributesDistributionText = new JTextField("1, 1, 1");
         attributesDistributionText.setToolTipText("If the number of attributes is 3 you will have " +
-                                                "\nto specify: size_set1, size_set2, size_set3 (e.g. 1, 1, 2)");
+                                                "\nto specify: size_set1, size_set2, size_set3 (e.g. 1, 1, 2). You can specify at most 8 sets.");
         attributesDistributionText.setBounds(FIELD_X+20, y_coordinate, 120, HEIGHT);
         optionsPanel.add(attributesDistributionLabel);
         optionsPanel.add(attributesDistributionText);
