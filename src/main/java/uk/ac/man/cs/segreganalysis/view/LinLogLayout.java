@@ -10,12 +10,8 @@ import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants;
 import org.graphstream.ui.layout.springbox.implementations.LinLog;
 import org.graphstream.ui.spriteManager.Sprite;
 import org.graphstream.ui.spriteManager.SpriteManager;
-import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.stream.ProxyPipe;
-import scala.util.parsing.combinator.testing.Str;
-import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -71,7 +67,7 @@ public class LinLogLayout {
         ccCount = sm.addSprite("CC");
         layout.configure(a, r, true, force);
         cc.setCutAttribute("cut");
-        ccCount.setPosition(StyleConstants.Units.PX, 20, 20, 0);		// 2
+        ccCount.setPosition(StyleConstants.Units.PX, 20, 20, 0);
 
         layout.addSink(graph);
         graph.addSink(layout);
@@ -89,16 +85,19 @@ public class LinLogLayout {
             @Override
             public Integer doInBackground() {
 
+                long i = 0;
+
                 // Connect the graph to the layout so that the layout receive
                 // each modification event on the graph.
                 // Check if the user closed the viewer window to properly
                 // end the program.
-                while(! graph.hasAttribute("ui.viewClosed")) {
+                while(i<100000 && !graph.hasAttribute("ui.viewClosed")) {
+                    i++;
                     // Consult these events regularly to update the graph from the user interactions.
                     fromViewer.pump();
                     layout.compute();
-                    showCommunities();                // 3
-                    ccCount.setAttribute("ui.label",		//
+                    showCommunities();
+                    ccCount.setAttribute("ui.label",
                             String.format(fileName + " modules: %d", cc.getConnectedComponentsCount()));
                 }
                 return 1;
@@ -134,19 +133,19 @@ public class LinLogLayout {
             Else, remove the "cut" attribute and ui.class.
          */
 
-        for(int i=0; i<nEdges; i++) {					// 1
+        for(int i=0; i<nEdges; i++) {
             Edge edge = graph.getEdge(i);
 
-            if(edgesDist[i] > averageDist * cutThreshold) {		// 2
-                edge.addAttribute("ui.class", "cut");		// 2a
+            if(edgesDist[i] > averageDist * cutThreshold) {
+                edge.addAttribute("ui.class", "cut");
                 edge.addAttribute("cut");
             } else {
-                edge.removeAttribute("ui.class");		// 2b
+                edge.removeAttribute("ui.class");		
                 edge.removeAttribute("cut");
             }
         }
     }
 
-    protected static String styleSheet = "url('./stylesheet.css')";
+    private static String styleSheet = "url('./stylesheet.css')";
 
 }

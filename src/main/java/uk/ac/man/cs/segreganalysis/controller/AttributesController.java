@@ -2,6 +2,7 @@ package uk.ac.man.cs.segreganalysis.controller;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import uk.ac.man.cs.segreganalysis.SegregAnalysis;
 import uk.ac.man.cs.segreganalysis.utilities.GraphUtilities;
 import uk.ac.man.cs.segreganalysis.view.LinLogLayout;
 import uk.ac.man.cs.segreganalysis.view.MainWindow;
@@ -18,9 +19,14 @@ public class AttributesController {
 
     private int numberOfAttributes;
     private int[] attributesDistribution;
+    private MainWindow view;
 
 
     public AttributesController(MainWindow view) {
+        this.view = view;
+        if (view.getAttributesFromFileRadioButton().isSelected()) {
+            return;
+        }
 
         String[] distrib = view.getAttributesDistributionText().getText().split(" ?, ?");
         this.numberOfAttributes = distrib.length;
@@ -34,6 +40,14 @@ public class AttributesController {
     }
 
     public void initialiseAttributes(Graph graph) {
+
+        if (view.getAttributesFromFileRadioButton().isSelected()) {
+            
+            SegregAnalysis.logger.info("Keeping attributes from file: " + view.getFileBrowseField().getText());
+            // display
+            new LinLogLayout(view.getFileBrowseField().getText());
+            return;
+        }
 
         int[] setSizes = calculateActualSetSizes(graph.getNodeCount());
 

@@ -47,6 +47,7 @@ public class MainWindow extends JFrame {
 
 
     private JTextField attributesDistributionText;
+    private JRadioButton attributesFromFileRadioButton;
 
 
     public MainWindow(String title){
@@ -179,6 +180,69 @@ public class MainWindow extends JFrame {
     }
 
     /* Creates the panel where the user specifies
+     * details concerned with the attributes
+     */
+    private JComponent makeAttributesPanel() {
+
+        // First sub-panel: buttons
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(null);
+        buttonsPanel.setMaximumSize(new Dimension(1000, 70));
+
+        // Create buttons
+        attributesFromFileRadioButton = new JRadioButton("Keep the attributes from the file");
+        JRadioButton randomGenerationRadioButton = new JRadioButton("Generate new attributes (override file)");
+        randomGenerationRadioButton.setSelected(true);
+        //Group the radio buttons
+        ButtonGroup group = new ButtonGroup();
+        group.add(attributesFromFileRadioButton);
+        group.add(randomGenerationRadioButton);
+
+        y_coordinate = 10;
+
+        attributesFromFileRadioButton.setBounds(10, y_coordinate, 500, HEIGHT);
+        buttonsPanel.add(attributesFromFileRadioButton);
+
+        y_coordinate += 30;
+
+        randomGenerationRadioButton.setBounds(10, y_coordinate , 500, HEIGHT);
+        buttonsPanel.add(randomGenerationRadioButton);
+
+
+
+        // Second sub-Panel: Attributes Generation options
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(null);
+        optionsPanel.setMaximumSize(new Dimension(1000, 150));
+
+        TitledBorder title = BorderFactory.createTitledBorder("Attributes generation options");
+        title.setTitleJustification(TitledBorder.CENTER);
+        optionsPanel.setBorder(title);
+
+        y_coordinate = 30;
+
+
+        JLabel attributesDistributionLabel = new JLabel("Relative size of attribute sets: ");
+        attributesDistributionLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
+        attributesDistributionText = new JTextField("1, 1, 1");
+        attributesDistributionText.setToolTipText("If the number of attributes is 3 you will have " +
+                "\nto specify: size_set1, size_set2, size_set3 (e.g. 1, 1, 2). You can specify at most 8 sets.");
+        attributesDistributionText.setBounds(FIELD_X+20, y_coordinate, 120, HEIGHT);
+        optionsPanel.add(attributesDistributionLabel);
+        optionsPanel.add(attributesDistributionText);
+
+
+        // add everything to a container panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(buttonsPanel);
+        panel.add(optionsPanel);
+
+        return panel;
+    }
+
+    /* Creates the panel where the user specifies
      * how to run the simulation
      */
     private JComponent makeSimulationPanel() {
@@ -202,11 +266,11 @@ public class MainWindow extends JFrame {
 
         // type of algorithm applied
 
-        JLabel algorithmTypeLabel = new JLabel("Algorithm type:");
+        JLabel algorithmTypeLabel = new JLabel("Segregation Model:");
         algorithmTypeLabel.setBounds(LABEL_X, y_coordinate,LABEL_WIDTH,HEIGHT);
         panel.add(algorithmTypeLabel);
 
-        String[] algorithmTypeChoices = {"Dissimilarity", "Affinity", "Both"};
+        String[] algorithmTypeChoices = {"Dissimilarity", "Affinity", "Interleaved"};
         algorithmDropdown = new JComboBox<>(algorithmTypeChoices);
         getAlgorithmDropdown().setBounds(FIELD_X, y_coordinate,FIELD_WIDTH, HEIGHT);
         panel.add(getAlgorithmDropdown());
@@ -244,68 +308,10 @@ public class MainWindow extends JFrame {
     }
 
 
-    /* Creates the panel where the user specifies
-         * details concerned with the attributes
-         */
-    private JComponent makeAttributesPanel() {
-
-        // First sub-panel: buttons
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(null);
-        buttonsPanel.setMaximumSize(new Dimension(1000, 70));
-
-        // Create buttons
-        JRadioButton fromFileRadioButton = new JRadioButton("Keep the attributes from the file");
-        JRadioButton randomGenerationRadioButton = new JRadioButton("Generate new attributes (override file)");
-        randomGenerationRadioButton.setSelected(true);
-        //Group the radio buttons
-        ButtonGroup group = new ButtonGroup();
-        group.add(fromFileRadioButton);
-        group.add(randomGenerationRadioButton);
-
-        y_coordinate = 10;
-
-        fromFileRadioButton.setBounds(10, y_coordinate, 500, HEIGHT);
-        buttonsPanel.add(fromFileRadioButton);
-
-        y_coordinate += 30;
-
-        randomGenerationRadioButton.setBounds(10, y_coordinate , 500, HEIGHT);
-        buttonsPanel.add(randomGenerationRadioButton);
-
-
-
-        // Second sub-Panel: Attributes Generation options
-        JPanel optionsPanel = new JPanel();
-        optionsPanel.setLayout(null);
-        optionsPanel.setMaximumSize(new Dimension(1000, 150));
-
-        TitledBorder title = BorderFactory.createTitledBorder("Attributes generation options");
-        title.setTitleJustification(TitledBorder.CENTER);
-        optionsPanel.setBorder(title);
-
-        y_coordinate = 30;
-
-
-        JLabel attributesDistributionLabel = new JLabel("Relative size of attribute sets: ");
-        attributesDistributionLabel.setBounds(LABEL_X, y_coordinate, 200, HEIGHT);
-        attributesDistributionText = new JTextField("1, 1, 1");
-        attributesDistributionText.setToolTipText("If the number of attributes is 3 you will have " +
-                                                "\nto specify: size_set1, size_set2, size_set3 (e.g. 1, 1, 2). You can specify at most 8 sets.");
-        attributesDistributionText.setBounds(FIELD_X+20, y_coordinate, 120, HEIGHT);
-        optionsPanel.add(attributesDistributionLabel);
-        optionsPanel.add(attributesDistributionText);
-
-
-        // add everything to a container panel
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        panel.add(buttonsPanel);
-        panel.add(optionsPanel);
-
-        return panel;
+    public JRadioButton getAttributesFromFileRadioButton() {
+        return attributesFromFileRadioButton;
     }
+
 
     public JTextField getAttributesDistributionText() {
         return attributesDistributionText;

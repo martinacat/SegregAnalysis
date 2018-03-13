@@ -7,6 +7,8 @@
     <groupId>uk.ac.man.cs</groupId>
     <artifactId>segreganalysis</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>SegregAnalysis</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,4 +68,6 @@
 
 
     </dependencies>
+
+
 </project>

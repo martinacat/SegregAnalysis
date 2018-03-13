@@ -74,18 +74,12 @@ public class AdvancedSettingsWindow extends JFrame {
         return biasEvolutionLabel;
     }
 
-    public JPanel getEvolutionOptionsPanel() {
-        return evolutionOptionsPanel;
-    }
-
-
 
 
     private void populateView(JPanel container) {
 
         this.container = container;
 
-        populateEvolutionOptionsPanel();
         populateDistributionOptionsPanel();
 
 
@@ -133,10 +127,7 @@ public class AdvancedSettingsWindow extends JFrame {
 
     }
 
-    private void populateEvolutionOptionsPanel() {
 
-
-    }
 
     public JLabel getLinearStartBiasLabel() {
         return linearStartBiasLabel;
@@ -167,11 +158,6 @@ public class AdvancedSettingsWindow extends JFrame {
         distributionOptionsPanel.add(biasFunctionLabel);
         String[] biasEvolutionFunctionChoices = {"None", "Linear", "Curve"};
         biasEvolutionFunctionDropdown = new JComboBox<>(biasEvolutionFunctionChoices);
-        biasEvolutionFunctionDropdown.setToolTipText(
-                "<html>" +
-                        "<img src=" + getClass().getResource("/decay.png") + "/>Decay curve: e^-bx<br>" +
-                        "<img src=" + getClass().getResource("/growth.png") + "/>Growth curve: 1-exp(-bx)<br> " +
-                        "</html>");
         biasEvolutionFunctionDropdown.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
 
         biasFunctionLabel.setLabelFor(biasEvolutionFunctionDropdown);
@@ -197,6 +183,13 @@ public class AdvancedSettingsWindow extends JFrame {
         biasEvolutionInTimeDropdown = new JComboBox<>(biasEvolutionInTimeChoices);
         biasEvolutionInTimeDropdown.setBounds(FIELD_X-100, y_coordinate, 150, HEIGHT);
         biasEvolutionInTimeDropdown.setVisible(false);
+        biasEvolutionInTimeDropdown.setToolTipText(
+                "<html>" +
+                        "<img src=" + getClass().getResource("/img/decay.png") + "/><br>" +
+                        "<img src=" + getClass().getResource("/img/decay_math.png") + "/><br><br>" +
+                        "<img src=" + getClass().getResource("/img/growth.png") + "/><br> " +
+                        "<img src=" + getClass().getResource("/img/growth_math.png") + "/>" +
+                        "</html>");
         biasEvolutionLabel.setLabelFor(biasEvolutionInTimeDropdown);
         distributionOptionsPanel.add(biasEvolutionInTimeDropdown);
 

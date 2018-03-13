@@ -42,6 +42,7 @@ public class Start implements ActionListener {
         if (event.getSource() == view.getApplyButton()) {
 
             graph = new SingleGraph("Network");
+            graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
             //graph.addAttribute("ui.quality");
             graph.addAttribute("ui.antialias");
 
@@ -111,7 +112,6 @@ public class Start implements ActionListener {
         Flags.Function function;
         Flags.Algorithm algorithm;
 
-        graph.addAttribute("ui.stylesheet", "url('./stylesheet.css')");
 
         boolean showDuncan = view.getCheckBoxDSI().isSelected();
         boolean showYulesQ = view.getCheckBoxYules().isSelected();
