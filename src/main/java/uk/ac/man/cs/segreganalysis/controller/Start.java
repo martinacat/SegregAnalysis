@@ -158,7 +158,6 @@ public class Start implements ActionListener {
             algorithm = Flags.Algorithm.AFFINITY;
             SegregAnalysis.logger.info(view.getAlgorithmDropdown().getSelectedItem() + " selected");
 
-            Model affinityModel;
             if (Flags.function != Flags.Function.LINEAR) {
                 interleavingModels[0] = new AffinityModel(graph, aversionBias, coefficient, steps);
                 interleavingModels[1] = new AffinityModel(graph, aversionBias, coefficient, steps);
@@ -234,7 +233,7 @@ public class Start implements ActionListener {
         else if (algorithm == Flags.Algorithm.AFFINITY) {
             biasPlot.setDescription("Attachment bias" );
         }
-        else if (algorithm == Flags.Algorithm.BOTH) {
+        else { // if (algorithm == Flags.Algorithm.BOTH) {
             biasPlot.setDescription("Aversion/Attachment bias" );
         }
 
