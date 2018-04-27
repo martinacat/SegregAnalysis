@@ -57,7 +57,7 @@ public class AffinityModel extends Model{
     }
 
     private boolean areToBeConnected(Node n1, Node n2) {
-        return (Math.random() >= probabilityOfConnection(n1, n2));
+        return (!n1.hasEdgeBetween(n2) && Math.random() >= probabilityOfConnection(n1, n2));
     }
 
 
